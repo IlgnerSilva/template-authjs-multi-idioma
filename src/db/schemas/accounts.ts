@@ -1,23 +1,25 @@
-import { integer, primaryKey, sqliteTable, text } from 'drizzle-orm/sqlite-core'
+import { int, mysqlTable, primaryKey, varchar } from 'drizzle-orm/mysql-core'
 import type { AdapterAccountType } from 'next-auth/adapters'
 import { usersTable } from './users'
 
-export const accountsTable = sqliteTable(
+export const accountsTable = mysqlTable(
 	'account',
 	{
-		userId: text('userId')
+		userId: varchar('userId', { length: 255 })
 			.notNull()
 			.references(() => usersTable.id, { onDelete: 'cascade' }),
-		type: text('type').$type<AdapterAccountType>().notNull(),
-		provider: text('provider').notNull(),
-		providerAccountId: text('providerAccountId').notNull(),
-		refresh_token: text('refresh_token'),
-		access_token: text('access_token'),
-		expires_at: integer('expires_at'),
-		token_type: text('token_type'),
-		scope: text('scope'),
-		id_token: text('id_token'),
-		session_state: text('session_state'),
+		type: varchar('type', { length: 255 })
+			.$type<AdapterAccountType>()
+			.notNull(),
+		provider: varchar('provider', { length: 255 }).notNull(),
+		providerAccountId: varchar('providerAccountId', { length: 255 }).notNull(),
+		refresh_token: varchar('refresh_token', { length: 255 }),
+		access_token: varchar('access_token', { length: 255 }),
+		expires_at: int('expires_at'),
+		token_type: varchar('token_type', { length: 255 }),
+		scope: varchar('scope', { length: 255 }),
+		id_token: varchar('id_token', { length: 2048 }),
+		session_state: varchar('session_state', { length: 255 }),
 	},
 	(account) => ({
 		compoundKey: primaryKey({

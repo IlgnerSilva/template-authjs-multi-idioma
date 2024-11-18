@@ -6,12 +6,21 @@ import NextAuth from 'next-auth'
 import authConfig from './auth.config'
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
-	adapter: DrizzleAdapter(db, {
-		usersTable: usersTable,
-		accountsTable: accountsTable,
-	}),
+	adapter: DrizzleAdapter(db),
 	session: {
 		strategy: 'jwt',
 	},
+	pages: {
+		signIn: '/auth/login',
+	},
+	callbacks: {
+		redirect: async ({ url, baseUrl }) => {
+			if (url.startsWith('/')) {
+				return `${baseUrl}${url}`
+			}
+			return url
+		},
+	},
+	debug: true,
 	...authConfig,
 })

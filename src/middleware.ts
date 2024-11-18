@@ -13,10 +13,7 @@ const intlMiddleware = createMiddleware(routing)
 
 // Função que testa se o caminho da URL corresponde a uma das rotas definidas
 const testPathnameRegex = (pages: string[], pathName: string): boolean => {
-	// Substitui rotas dinâmicas (com parâmetros) por expressões regulares
 	const pathsWithParams = pages.map((p) => p.replace(/\[.*?\]/g, '[^/]+'))
-
-	// Cria uma expressão regular para testar se o caminho (pathName) corresponde a uma das rotas
 	return RegExp(
 		`^(/(${locales.join('|')}))?(${pathsWithParams.flatMap((p) => (p === '/' ? ['', '/'] : p)).join('|')})/?$`,
 		'i', // flag "i" para ignorar maiúsculas/minúsculas
@@ -25,18 +22,21 @@ const testPathnameRegex = (pages: string[], pathName: string): boolean => {
 
 // Middleware de autenticação usando NextAuth
 const authMiddleware = auth((req) => {
-	// Verifica se a página solicitada faz parte das rotas de autenticação
+	const isPublicPage = testPathnameRegex(publicRoutes, req.nextUrl.pathname)
 	const isAuthPage = testPathnameRegex(authRoutes, req.nextUrl.pathname)
-	// Verifica se o usuário está autenticado
 	const isLogged = !!req.auth
 
 	// Se o usuário não estiver autenticado e tentar acessar uma página que requer autenticação, redireciona para a página de login
 	if (!isLogged && isAuthPage) {
+		// Se já estiver tentando acessar a página de login, não redireciona
+		if (req.nextUrl.pathname === '/auth/login') {
+			return NextResponse.next() // Deixa o usuário continuar na página de login
+		}
 		return NextResponse.redirect(new URL('/auth/login', req.nextUrl))
 	}
 
 	// Se o usuário estiver autenticado e tentar acessar uma página de login, redireciona para a página inicial
-	if (isLogged && isAuthPage) {
+	if (isLogged && isPublicPage) {
 		return NextResponse.redirect(new URL('/', req.nextUrl))
 	}
 
@@ -46,31 +46,12 @@ const authMiddleware = auth((req) => {
 
 // Função principal do middleware que combina a autenticação e a internacionalização
 const middleware = (req: NextRequest) => {
-	// Verifica se a página solicitada é uma página pública (sem necessidade de autenticação)
-	const isPublicPage = testPathnameRegex(publicRoutes, req.nextUrl.pathname)
-	// Verifica se a página solicitada é uma página de autenticação
-	const isAuthPage = testPathnameRegex(authRoutes, req.nextUrl.pathname)
-
-	// Se for uma página de autenticação, executa o middleware de autenticação
-	if (isAuthPage) {
-		// biome-ignore lint/suspicious/noExplicitAny: <explanation>
-		return (authMiddleware as any)(req)
-	}
-
-	// Se for uma página pública, executa o middleware de internacionalização
-	if (isPublicPage) {
-		return intlMiddleware(req)
-		// biome-ignore lint/style/noUselessElse: <explanation>
-	} else {
-		// Caso contrário, executa o middleware de autenticação (para páginas protegidas)
-		// biome-ignore lint/suspicious/noExplicitAny: <explanation>
-		return (authMiddleware as any)(req)
-	}
+	// biome-ignore lint/suspicious/noExplicitAny: <explanation>
+	return (authMiddleware as any)(req)
 }
 
 // Configuração de correspondência para os caminhos que o middleware deve interceptar
 export const config = {
-	// A expressão regular garante que o middleware será aplicado a todas as rotas, exceto aquelas para API, Next.js e arquivos estáticos
 	matcher: ['/((?!api|_next|_vercel|.*\\..*).*)'],
 }
 

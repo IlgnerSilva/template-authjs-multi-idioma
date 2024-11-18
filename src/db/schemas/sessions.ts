@@ -1,10 +1,10 @@
-import { integer, sqliteTable, text } from 'drizzle-orm/sqlite-core'
+import { mysqlTable, timestamp, varchar } from 'drizzle-orm/mysql-core'
 import { usersTable } from './users'
 
-export const sessionsTable = sqliteTable('session', {
-	sessionToken: text('sessionToken').primaryKey(),
-	userId: text('userId')
+export const sessionTable = mysqlTable('session', {
+	sessionToken: varchar('sessionToken', { length: 255 }).primaryKey(),
+	userId: varchar('userId', { length: 255 })
 		.notNull()
 		.references(() => usersTable.id, { onDelete: 'cascade' }),
-	expires: integer('expires', { mode: 'timestamp_ms' }).notNull(),
+	expires: timestamp('expires', { mode: 'date' }).notNull(),
 })

@@ -2,9 +2,10 @@ import { z } from 'zod'
 import 'dotenv/config'
 
 const envSchema = z.object({
-	DATABASE_URL: z.string(),
-	AUTH_DRIZZLE_URL: z.string(),
-	DATABASE_AUTH_TOKEN: z.string(),
+	DATABASE_URL: z.string().optional(),
+	AUTH_GOOGLE_PROVIDER: z.string().optional(),
+	// AUTH_DRIZZLE_URL: z.string(),
+	// DATABASE_AUTH_TOKEN: z.string(),
 })
 
 if (!envSchema.safeParse(process.env).success)

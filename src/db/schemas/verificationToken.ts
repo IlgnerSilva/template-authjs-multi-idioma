@@ -1,11 +1,16 @@
-import { integer, primaryKey, sqliteTable, text } from 'drizzle-orm/sqlite-core'
+import {
+	mysqlTable,
+	primaryKey,
+	timestamp,
+	varchar,
+} from 'drizzle-orm/mysql-core'
 
-export const verificationTokensTable = sqliteTable(
+export const verificationToken = mysqlTable(
 	'verificationToken',
 	{
-		identifier: text('identifier').notNull(),
-		token: text('token').notNull(),
-		expires: integer('expires', { mode: 'timestamp_ms' }).notNull(),
+		identifier: varchar('identifier', { length: 255 }).notNull(),
+		token: varchar('token', { length: 255 }).notNull(),
+		expires: timestamp('expires', { mode: 'date' }).notNull(),
 	},
 	(verificationToken) => ({
 		compositePk: primaryKey({

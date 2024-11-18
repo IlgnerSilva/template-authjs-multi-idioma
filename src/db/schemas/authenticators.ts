@@ -1,24 +1,32 @@
-import { integer, primaryKey, sqliteTable, text } from 'drizzle-orm/sqlite-core'
+import {
+	boolean,
+	int,
+	mysqlTable,
+	primaryKey,
+	varchar,
+} from 'drizzle-orm/mysql-core'
 import { usersTable } from './users'
 
-export const authenticatorsTable = sqliteTable(
+export const authenticatorTable = mysqlTable(
 	'authenticator',
 	{
-		credentialID: text('credentialID').notNull().unique(),
-		userId: text('userId')
+		credentialID: varchar('credentialID', { length: 255 }).notNull().unique(),
+		userId: varchar('userId', { length: 255 })
 			.notNull()
 			.references(() => usersTable.id, { onDelete: 'cascade' }),
-		providerAccountId: text('providerAccountId').notNull(),
-		credentialPublicKey: text('credentialPublicKey').notNull(),
-		counter: integer('counter').notNull(),
-		credentialDeviceType: text('credentialDeviceType').notNull(),
-		credentialBackedUp: integer('credentialBackedUp', {
-			mode: 'boolean',
+		providerAccountId: varchar('providerAccountId', { length: 255 }).notNull(),
+		credentialPublicKey: varchar('credentialPublicKey', {
+			length: 255,
 		}).notNull(),
-		transports: text('transports'),
+		counter: int('counter').notNull(),
+		credentialDeviceType: varchar('credentialDeviceType', {
+			length: 255,
+		}).notNull(),
+		credentialBackedUp: boolean('credentialBackedUp').notNull(),
+		transports: varchar('transports', { length: 255 }),
 	},
 	(authenticator) => ({
-		compositePK: primaryKey({
+		compositePk: primaryKey({
 			columns: [authenticator.userId, authenticator.credentialID],
 		}),
 	}),

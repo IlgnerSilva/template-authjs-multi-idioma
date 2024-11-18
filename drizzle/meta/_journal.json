@@ -1,0 +1,13 @@
+{
+  "version": "7",
+  "dialect": "mysql",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "5",
+      "when": 1731707030032,
+      "tag": "0000_striped_spiral",
+      "breakpoints": true
+    }
+  ]
+}
