@@ -1,9 +1,34 @@
 {
-	"HomePage": {
-		"title": "Hello world!",
-		"about": "Go to the about page"
+	"Pages": {
+		"Login": {
+			"title": "Enter your email below to log in to your account",
+			"messages": {
+				"error": {
+					"email": "Invalid email",
+					"password": "The password field cannot be empty",
+					"credentials": "Incorrect username or password"
+				}
+			}
+		}
 	},
-	"Login": {
-		"title": "Enter your email below to log in to your account"
+	"Components": {
+		"Button": {
+			"login": {
+				"default": "Log In",
+				"google": "Log In with Google",
+				"facebook": "Log In with Facebook",
+				"github": "Log In with GitHub"
+			}
+		},
+		"Input": {
+			"email": {
+				"placeholder": "email@example.com",
+				"label": "Email"
+			},
+			"password": {
+				"label": "Password",
+				"placeholder": "Password..."
+			}
+		}
 	}
 }
