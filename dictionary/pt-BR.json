@@ -1,9 +1,34 @@
 {
-	"HomePage": {
-		"title": "Olá mundo!",
-		"about": "Ir para a página de sobre"
+	"Pages": {
+		"Login": {
+			"title": "Digite seu e-mail abaixo para fazer login em sua conta",
+			"messages": {
+				"error": {
+					"email": "E-mail inválido",
+					"password": "O campo senha não pode estar vazio",
+					"credentials": "Usuário ou senha incorretos"
+				}
+			}
+		}
 	},
-	"Login": {
-		"title": "Digite seu e-mail abaixo para fazer login em sua conta"
+	"Components": {
+		"Button": {
+			"login": {
+				"default": "Entrar",
+				"google": "Entrar com Google",
+				"facebook": "Entrar com Facebook",
+				"github": "Entrar com GitHub"
+			}
+		},
+		"Input": {
+			"email": {
+				"placeholder": "email@exemplo.com",
+				"label": "E-mail"
+			},
+			"password": {
+				"label": "Senha",
+				"placeholder": "Senha..."
+			}
+		}
 	}
 }
