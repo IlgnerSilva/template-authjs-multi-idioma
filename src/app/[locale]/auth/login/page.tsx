@@ -1,4 +1,5 @@
 import { LoginForm } from '@/components/auth/login-form'
+import { SwitcherLocale } from '@/components/utils/switcher-locale'
 
 export default function Page() {
 	return (
