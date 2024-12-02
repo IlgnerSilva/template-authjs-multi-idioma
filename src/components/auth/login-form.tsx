@@ -23,6 +23,7 @@ import {
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
+import { SwitcherLocale } from '@/components/utils/switcher-locale'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useTranslations } from 'next-intl'
 import { useForm } from 'react-hook-form'
@@ -54,7 +55,10 @@ export function LoginForm() {
 	return (
 		<Card className="mx-auto max-w-sm">
 			<CardHeader>
-				<CardTitle className="text-2xl">Login</CardTitle>
+				<div className="flex justify-between">
+					<CardTitle className="text-2xl">Login</CardTitle>
+					<SwitcherLocale />
+				</div>
 				<CardDescription>{p('Login.title')}</CardDescription>
 			</CardHeader>
 			<CardContent>
