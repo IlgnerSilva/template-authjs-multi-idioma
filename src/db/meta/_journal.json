@@ -1,0 +1,34 @@
+{
+  "version": "7",
+  "dialect": "mysql",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "5",
+      "when": 1733151252143,
+      "tag": "0000_neat_phalanx",
+      "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "5",
+      "when": 1733151565363,
+      "tag": "0001_sharp_sebastian_shaw",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "5",
+      "when": 1733155561078,
+      "tag": "0002_sad_galactus",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "5",
+      "when": 1733155760995,
+      "tag": "0003_spotty_lord_tyger",
+      "breakpoints": true
+    }
+  ]
+}

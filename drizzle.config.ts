@@ -8,7 +8,7 @@ if (!url) {
 }
 
 export default defineConfig({
-	out: './drizzle',
+	out: './src/db/',
 	schema: './src/db/schemas/',
 	dialect: 'mysql',
 	dbCredentials: {
