@@ -1,4 +1,4 @@
-import { mysqlTable, timestamp, varchar } from 'drizzle-orm/mysql-core'
+import { boolean, mysqlTable, timestamp, varchar } from 'drizzle-orm/mysql-core'
 
 export const usersTable = mysqlTable('user', {
 	id: varchar('user_id', { length: 255 })
@@ -11,5 +11,6 @@ export const usersTable = mysqlTable('user', {
 		mode: 'date',
 		fsp: 3,
 	}),
+	twoFactorAuthentication: boolean('two_factor_authentication').default(false),
 	image: varchar('image', { length: 255 }),
 })

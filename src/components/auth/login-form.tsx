@@ -1,7 +1,5 @@
 'use client'
 
-import Link from 'next/link'
-
 import { loginCredentials } from '@/actions/auth/login'
 import { GoogleProvider } from '@/components/auth/providers'
 import { Button } from '@/components/ui/button'
@@ -22,26 +20,36 @@ import {
 	FormMessage,
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
 import { SwitcherLocale } from '@/components/utils/switcher-locale'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useTranslations } from 'next-intl'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
+import { useAction } from "next-safe-action/hooks";
+import { useState, useTransition } from 'react'
+import { InputOTP, InputOTPGroup, InputOTPSlot } from '../ui/input-otp'
 
 export function LoginForm() {
+	const [ isPending, startTransition] = useTransition();
+	const [showOTP, setShowOTP] = useState(false)
 	const p = useTranslations('Pages')
 	const c = useTranslations('Components')
+	const { execute,  result, status, isExecuting  } = useAction(loginCredentials); 
 
 	const formSchema = z.object({
 		email: z.string().email({ message: p('Login.messages.error.email') }),
 		password: z
 			.string()
 			.min(1, { message: p('Login.messages.error.password') }),
+		code: z.string().optional()
 	})
 
 	async function onSubmit(values: z.infer<typeof formSchema>) {
-		console.log(await loginCredentials(values))
+		execute(values)
+		startTransition(() => {
+			if(result.data?.type === "twoFactorAuthentication")
+				setShowOTP(true)
+		})
 	}
 
 	const form = useForm<z.infer<typeof formSchema>>({
@@ -49,6 +57,7 @@ export function LoginForm() {
 		defaultValues: {
 			email: '',
 			password: '',
+			code: ''
 		},
 	})
 
@@ -59,57 +68,92 @@ export function LoginForm() {
 					<CardTitle className="text-2xl">Login</CardTitle>
 					<SwitcherLocale />
 				</div>
-				<CardDescription>{p('Login.title')}</CardDescription>
+				<CardDescription>{!showOTP ? p('Login.titleCredentials') : p('Login.titleOTP')}</CardDescription>
+				
 			</CardHeader>
 			<CardContent>
 				<div className="grid gap-4">
 					<Form {...form}>
 						<form onSubmit={form.handleSubmit(onSubmit)}>
-							<div className="grid gap-2">
+						{!showOTP && (
+							<>
+								<div className="grid gap-2">
+									<FormField
+										name="email"
+										control={form.control}
+										render={({ field }) => (
+											<FormItem>
+												{/* <FormLabel className="text-slate-800">
+													{c('Input.email.label')}
+												</FormLabel> */}
+												<FormDescription>
+													<FormMessage />
+												</FormDescription>
+												<FormControl>
+													<Input
+														placeholder={c('Input.email.placeholder')}
+														{...field}
+													/>
+												</FormControl>
+											</FormItem>
+										)}
+									/>
+								</div>
+								<div className="grid gap-2 mt-5">
+									<FormField
+										name="password"
+										control={form.control}
+										render={({ field }) => (
+											<FormItem>
+												{/* <FormLabel className="text-slate-800">
+													{c('Input.password.label')}
+												</FormLabel> */}
+												<FormDescription>
+													<FormMessage />
+												</FormDescription>
+												<FormControl>
+													<Input
+														placeholder={c('Input.password.placeholder')}
+														{...field}
+													/>
+												</FormControl>
+											</FormItem>
+										)}
+									/>
+								</div>
+							</>
+						)}
+						{showOTP && (
+							<div>
 								<FormField
-									name="email"
 									control={form.control}
+									name="code"
 									render={({ field }) => (
 										<FormItem>
-											{/* <FormLabel className="text-slate-800">
-												{c('Input.email.label')}
-											</FormLabel> */}
-											<FormDescription>
-												<FormMessage />
-											</FormDescription>
+											<FormLabel>{"Código"}</FormLabel>
 											<FormControl>
-												<Input
-													placeholder={c('Input.email.placeholder')}
-													{...field}
-												/>
+												<InputOTP maxLength={6} {...field}>
+													<InputOTPGroup>
+														<InputOTPSlot index={0} />
+														<InputOTPSlot index={1} />
+														<InputOTPSlot index={2} />
+													</InputOTPGroup>
+													<InputOTPGroup>
+														<InputOTPSlot index={3} />
+														<InputOTPSlot index={4} />
+														<InputOTPSlot index={5} />
+													</InputOTPGroup>
+												</InputOTP>
 											</FormControl>
+											<FormDescription>{"Favor entrar com o códio enviado por e-mail"}</FormDescription>
+											<FormMessage />
 										</FormItem>
 									)}
 								/>
 							</div>
-							<div className="grid gap-2 mt-5">
-								<FormField
-									name="password"
-									control={form.control}
-									render={({ field }) => (
-										<FormItem>
-											{/* <FormLabel className="text-slate-800">
-												{c('Input.password.label')}
-											</FormLabel> */}
-											<FormDescription>
-												<FormMessage />
-											</FormDescription>
-											<FormControl>
-												<Input
-													placeholder={c('Input.password.placeholder')}
-													{...field}
-												/>
-											</FormControl>
-										</FormItem>
-									)}
-								/>
-							</div>
-							<Button type="submit" className="w-full mt-5">
+						)}
+							<p id='message'>{isExecuting ? 'Entrando...' : 'TESTE' }</p>
+							<Button disabled={isPending} type="submit" className="w-full mt-5">
 								{c('Button.login.default')}
 							</Button>
 						</form>

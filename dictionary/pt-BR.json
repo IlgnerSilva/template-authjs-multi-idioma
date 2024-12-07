@@ -1,7 +1,8 @@
 {
 	"Pages": {
 		"Login": {
-			"title": "Digite seu e-mail abaixo para fazer login em sua conta",
+			"titleCredentials": "Digite seu e-mail abaixo para fazer login em sua conta",
+			"titleOTP": "Digite o codigo que você recebeu por email",
 			"messages": {
 				"error": {
 					"email": "E-mail inválido",
