@@ -4,7 +4,7 @@ import { Button } from '@/components/ui/button'
 export function GoogleProvider(props: { text: string }) {
 	if (process.env.NEXT_PUBLIC_AUTH_GOOGLE_PROVIDER === 'true')
 		return (
-			<form action={async () => await loginGoogle()}>
+			<form onSubmit={async () => await loginGoogle()}>
 				<Button type="submit" variant="outline" className="w-full">
 					{props.text}
 				</Button>

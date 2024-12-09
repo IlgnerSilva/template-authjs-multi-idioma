@@ -1,13 +1,13 @@
 {
 	"Pages": {
 		"Login": {
-			"titleCredentials": "Digite seu e-mail abaixo para fazer login em sua conta",
-			"titleOTP": "Digite o codigo que você recebeu por email",
+			"titleCredentials": "Digite seu e-mail abaixo para acessar sua conta",
+			"titleOTP": "Digite o código que você recebeu por e-mail",
 			"messages": {
 				"error": {
-					"email": "E-mail inválido",
-					"password": "O campo senha não pode estar vazio",
-					"credentials": "Usuário ou senha incorretos"
+					"email": "E-mail inválido",
+					"password": "O campo senha é obrigatório",
+					"credentials": "Usuário ou senha inválidos"
 				}
 			}
 		}

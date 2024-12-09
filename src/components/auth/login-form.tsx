@@ -21,43 +21,46 @@ import {
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { SwitcherLocale } from '@/components/utils/switcher-locale'
+import { CredentialsSchema } from '@/schemas/auth'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { Loader2 } from 'lucide-react'
 import { useTranslations } from 'next-intl'
-import { useForm } from 'react-hook-form'
-import { z } from 'zod'
-import { useAction } from "next-safe-action/hooks";
 import { useState, useTransition } from 'react'
+import { useForm } from 'react-hook-form'
+import type { z } from 'zod'
 import { InputOTP, InputOTPGroup, InputOTPSlot } from '../ui/input-otp'
 
 export function LoginForm() {
-	const [ isPending, startTransition] = useTransition();
+	const [isPending, startTransition] = useTransition()
 	const [showOTP, setShowOTP] = useState(false)
+	const [err, setErr] = useState<string | null>(null)
 	const p = useTranslations('Pages')
 	const c = useTranslations('Components')
-	const { execute,  result, status, isExecuting  } = useAction(loginCredentials); 
 
-	const formSchema = z.object({
-		email: z.string().email({ message: p('Login.messages.error.email') }),
-		password: z
-			.string()
-			.min(1, { message: p('Login.messages.error.password') }),
-		code: z.string().optional()
-	})
-
-	async function onSubmit(values: z.infer<typeof formSchema>) {
-		execute(values)
+	function onSubmit(values: z.infer<typeof CredentialsSchema>) {
 		startTransition(() => {
-			if(result.data?.type === "twoFactorAuthentication")
+			;(async () => {
+				const result = await loginCredentials(values)
+				if (!result) {
+					return
+				}
+
+				if (result.type !== 'twoFactorAuthentication') {
+					result.erro && setErr(result.message)
+					return
+				}
 				setShowOTP(true)
+				setErr(null)
+			})()
 		})
 	}
 
-	const form = useForm<z.infer<typeof formSchema>>({
-		resolver: zodResolver(formSchema),
+	const form = useForm<z.infer<typeof CredentialsSchema>>({
+		resolver: zodResolver(CredentialsSchema),
 		defaultValues: {
 			email: '',
 			password: '',
-			code: ''
+			code: '',
 		},
 	})
 
@@ -68,92 +71,96 @@ export function LoginForm() {
 					<CardTitle className="text-2xl">Login</CardTitle>
 					<SwitcherLocale />
 				</div>
-				<CardDescription>{!showOTP ? p('Login.titleCredentials') : p('Login.titleOTP')}</CardDescription>
-				
+				<CardDescription>
+					{!showOTP && p('Login.titleCredentials')}
+				</CardDescription>
 			</CardHeader>
 			<CardContent>
 				<div className="grid gap-4">
 					<Form {...form}>
 						<form onSubmit={form.handleSubmit(onSubmit)}>
-						{!showOTP && (
-							<>
-								<div className="grid gap-2">
+							{!showOTP && (
+								<>
+									<div className="grid gap-2">
+										<FormField
+											name="email"
+											control={form.control}
+											render={({ field }) => (
+												<FormItem>
+													<FormDescription>
+														<FormMessage />
+													</FormDescription>
+													<FormControl>
+														<Input
+															placeholder={c('Input.email.placeholder')}
+															{...field}
+														/>
+													</FormControl>
+												</FormItem>
+											)}
+										/>
+									</div>
+									<div className="grid gap-2 mt-5">
+										<FormField
+											name="password"
+											control={form.control}
+											render={({ field }) => (
+												<FormItem>
+													<FormDescription>
+														<FormMessage />
+													</FormDescription>
+													<FormControl>
+														<Input
+															type="password"
+															placeholder={c('Input.password.placeholder')}
+															{...field}
+														/>
+													</FormControl>
+												</FormItem>
+											)}
+										/>
+									</div>
+								</>
+							)}
+							{showOTP && (
+								<div>
 									<FormField
-										name="email"
 										control={form.control}
+										name="code"
 										render={({ field }) => (
 											<FormItem>
-												{/* <FormLabel className="text-slate-800">
-													{c('Input.email.label')}
-												</FormLabel> */}
-												<FormDescription>
-													<FormMessage />
-												</FormDescription>
-												<FormControl>
-													<Input
-														placeholder={c('Input.email.placeholder')}
+												<FormLabel>{p('Login.titleOTP')}</FormLabel>
+												<FormControl className="justify-center">
+													<InputOTP
+														className="justify-center"
+														maxLength={6}
 														{...field}
-													/>
+													>
+														<InputOTPGroup>
+															<InputOTPSlot index={0} />
+															<InputOTPSlot index={1} />
+															<InputOTPSlot index={2} />
+														</InputOTPGroup>
+														<InputOTPGroup>
+															<InputOTPSlot index={3} />
+															<InputOTPSlot index={4} />
+															<InputOTPSlot index={5} />
+														</InputOTPGroup>
+													</InputOTP>
 												</FormControl>
+												<FormMessage />
 											</FormItem>
 										)}
 									/>
 								</div>
-								<div className="grid gap-2 mt-5">
-									<FormField
-										name="password"
-										control={form.control}
-										render={({ field }) => (
-											<FormItem>
-												{/* <FormLabel className="text-slate-800">
-													{c('Input.password.label')}
-												</FormLabel> */}
-												<FormDescription>
-													<FormMessage />
-												</FormDescription>
-												<FormControl>
-													<Input
-														placeholder={c('Input.password.placeholder')}
-														{...field}
-													/>
-												</FormControl>
-											</FormItem>
-										)}
-									/>
-								</div>
-							</>
-						)}
-						{showOTP && (
-							<div>
-								<FormField
-									control={form.control}
-									name="code"
-									render={({ field }) => (
-										<FormItem>
-											<FormLabel>{"Código"}</FormLabel>
-											<FormControl>
-												<InputOTP maxLength={6} {...field}>
-													<InputOTPGroup>
-														<InputOTPSlot index={0} />
-														<InputOTPSlot index={1} />
-														<InputOTPSlot index={2} />
-													</InputOTPGroup>
-													<InputOTPGroup>
-														<InputOTPSlot index={3} />
-														<InputOTPSlot index={4} />
-														<InputOTPSlot index={5} />
-													</InputOTPGroup>
-												</InputOTP>
-											</FormControl>
-											<FormDescription>{"Favor entrar com o códio enviado por e-mail"}</FormDescription>
-											<FormMessage />
-										</FormItem>
-									)}
-								/>
-							</div>
-						)}
-							<p id='message'>{isExecuting ? 'Entrando...' : 'TESTE' }</p>
-							<Button disabled={isPending} type="submit" className="w-full mt-5">
+							)}
+							{err && <p className="text-red-500">{err}</p>}
+							<Button
+								disabled={isPending}
+								type="submit"
+								className="w-full mt-5"
+							>
+								{isPending && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}{' '}
 								{c('Button.login.default')}
 							</Button>
 						</form>

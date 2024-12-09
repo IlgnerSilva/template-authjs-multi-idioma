@@ -1,12 +1,13 @@
 {
 	"Pages": {
 		"Login": {
-			"title": "Enter your email below to log in to your account",
+			"titleCredentials": "Enter your email below to access your account",
+			"titleOTP": "Enter the code you received by email",
 			"messages": {
 				"error": {
 					"email": "Invalid email",
-					"password": "The password field cannot be empty",
-					"credentials": "Incorrect username or password"
+					"password": "Password field is required",
+					"credentials": "Invalid username or password"
 				}
 			}
 		}
@@ -14,10 +15,10 @@
 	"Components": {
 		"Button": {
 			"login": {
-				"default": "Log In",
-				"google": "Log In with Google",
-				"facebook": "Log In with Facebook",
-				"github": "Log In with GitHub"
+				"default": "Log in",
+				"google": "Log in with Google",
+				"facebook": "Log in with Facebook",
+				"github": "Log in with GitHub"
 			}
 		},
 		"Input": {
