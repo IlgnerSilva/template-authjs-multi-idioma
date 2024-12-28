@@ -1,4 +1,4 @@
-import { authRoutes, publicRoutes } from '@/config/routes'
+import { protectedRoutes, publicRoutes } from '@/routes'
 import NextAuth from 'next-auth'
 import createMiddleware from 'next-intl/middleware'
 import { type NextRequest, NextResponse } from 'next/server'
@@ -23,11 +23,11 @@ const testPathnameRegex = (pages: string[], pathName: string): boolean => {
 // Middleware de autenticação usando NextAuth
 const authMiddleware = auth((req) => {
 	const isPublicPage = testPathnameRegex(publicRoutes, req.nextUrl.pathname)
-	const isAuthPage = testPathnameRegex(authRoutes, req.nextUrl.pathname)
+	const isProtectPage = testPathnameRegex(protectedRoutes, req.nextUrl.pathname)
 	const isLogged = !!req.auth
 
 	// Se o usuário não estiver autenticado e tentar acessar uma página que requer autenticação, redireciona para a página de login
-	if (!isLogged && isAuthPage) {
+	if (!isLogged && isProtectPage) {
 		// Se já estiver tentando acessar a página de login, não redireciona
 		if (req.nextUrl.pathname === '/auth/login') {
 			return NextResponse.next() // Deixa o usuário continuar na página de login

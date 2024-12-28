@@ -1,6 +1,6 @@
 // Serviços de autenticação com 2FA
 
-import { createSessionOptions } from '@/lib/session'
+import { createSessionOptions } from '@/lib/utils'
 import { generateOTP } from '@/lib/utils'
 import { getIronSession } from 'iron-session'
 import { cookies } from 'next/headers'

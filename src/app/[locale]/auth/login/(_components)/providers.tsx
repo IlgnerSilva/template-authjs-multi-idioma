@@ -1,4 +1,4 @@
-import { loginGoogle } from '@/actions/auth/login'
+import { loginGoogle } from '@/app/[locale]/auth/login/(actions)/login'
 import { Button } from '@/components/ui/button'
 // import { env } from '@/env'
 export function GoogleProvider(props: { text: string }) {

@@ -1,7 +1,7 @@
 'use server'
 
 import { signIn } from '@/auth'
-import type { CredentialsSchema } from '@/schemas/auth'
+import type { CredentialsSchema } from '@/lib/schemas/auth'
 import { findByUserEmail } from '@/services/user'
 
 import {

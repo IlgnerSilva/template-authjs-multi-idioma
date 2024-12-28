@@ -13,6 +13,9 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
 		signIn: '/auth/login',
 	},
 	callbacks: {
+		signIn: async ({ account, profile }) => {
+			return true
+		},
 		redirect: async ({ url, baseUrl }) => {
 			if (url.startsWith('/')) {
 				return `${baseUrl}${url}`

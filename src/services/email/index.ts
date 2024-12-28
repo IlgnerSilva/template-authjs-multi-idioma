@@ -1,6 +1,6 @@
 import { env } from '@/env'
 
-import { EmailTemplate } from '@/schemas/email/'
+import { EmailTemplate } from '@/lib/templates/email'
 import { Resend } from 'resend'
 
 interface Email {
