@@ -1,68 +1,53 @@
-'use server'
+'use server';
 
-import { signIn } from '@/auth'
-import type { CredentialsSchema } from '@/lib/schemas/auth'
-import { findByUserEmail } from '@/services/user'
-
+import { signIn } from '@/auth';
+import { ERROR_TYPES, createError } from '@/lib/errors';
+import { CredentialsSchema } from '@/lib/schemas/auth';
 import {
 	destroyCodeTwoFactorAuthentication,
 	generateCodeTwoFactorAuthentication,
 	getCodeTwoFactorAuthentication,
-} from '@/services/auth/two-factor-authentication'
-import { sendEmail } from '@/services/email'
-import { compare } from 'bcrypt'
-import type { z } from 'zod'
+} from '@/services/auth/two-factor-authentication';
+import { sendEmail } from '@/services/email';
+import { findByUserEmail } from '@/services/user';
+import { compare } from 'bcrypt';
+import { createServerAction } from 'zsa';
 
-export const loginGoogle = async () => await signIn('google')
+export const loginGoogle = async () => await signIn('google');
 
-export async function loginCredentials(
-	authCredentials: z.infer<typeof CredentialsSchema>,
-) {
-	const user = await findByUserEmail(authCredentials.email)
-	if (!user)
-		return {
-			erro: true,
-			type: 'user',
-			message: 'User is not found.',
+export const loginCredentials = createServerAction()
+	.input(CredentialsSchema)
+	.handler(async ({ input }) => {
+		const user = await findByUserEmail(input.email);
+		if (!user[0]) {
+			return createError(ERROR_TYPES.USER_NOT_FOUND);
 		}
 
-	const { password, ...userFound } = user[0]
+		const { password_hash, ...userFound } = user[0];
 
-	if (!(await compare(authCredentials.password, user[0].password as string)))
-		return {
-			erro: true,
-			type: 'user',
-			message: 'Email or password is invalid.',
-		}
+		if (!(await compare(input.password, user[0].password_hash as string)))
+			return createError(ERROR_TYPES.INVALID_EMAIL_OR_PASSWORD);
 
-	if (user[0].twoFactorAuthentication) {
-		if (authCredentials.code) {
-			if (authCredentials.code === (await getCodeTwoFactorAuthentication())) {
-				await destroyCodeTwoFactorAuthentication()
+		if (!user[0].twoFactorAuthentication) {
+			if (input.code) {
+				if (input.code === (await getCodeTwoFactorAuthentication())) {
+					await destroyCodeTwoFactorAuthentication();
 
-				return await signIn('credentials', userFound)
+					return await signIn('credentials', userFound);
+				}
+
+				return createError(ERROR_TYPES.INVALID_CODE);
 			}
+			await generateCodeTwoFactorAuthentication();
+			// await sendEmail({
+			// 	email: input.email,
+			// 	subject: 'Two factor authentication',
+			// 	message: (await getCodeTwoFactorAuthentication()) as string,
+			// 	type: 'code',
+			// });
 
-			return {
-				erro: true,
-				type: 'user',
-				message: 'Invalid code.',
-			}
+			return createError(ERROR_TYPES.TWO_FACTOR_REQUIRED);
 		}
-		await generateCodeTwoFactorAuthentication()
-		await sendEmail({
-			email: authCredentials.email,
-			subject: 'Two factor authentication',
-			message: (await getCodeTwoFactorAuthentication()) as string,
-			type: 'code',
-		})
 
-		return {
-			erro: true,
-			type: 'twoFactorAuthentication',
-			message: 'Two factor authentication is required.',
-		}
-	}
-
-	return await signIn('credentials', userFound)
-}
+		return await signIn('credentials', userFound);
+	});

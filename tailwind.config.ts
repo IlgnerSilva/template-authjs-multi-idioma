@@ -1,4 +1,4 @@
-import type { Config } from 'tailwindcss'
+import type { Config } from 'tailwindcss';
 
 const config: Config = {
 	darkMode: ['class'],
@@ -12,10 +12,39 @@ const config: Config = {
 			colors: {
 				background: 'var(--background)',
 				foreground: 'var(--foreground)',
-				primary: '#8570FE',
-				gray: {
-					base: '#3a3d44',
-					opacity: '#6b6e75',
+				neutral: {
+					base: {
+						100: '#FFFFFF', // Mais claro
+						200: '#EFEFEF',
+						300: '#F4F4F4',
+						400: '#EFEFEF',
+						500: '#6F767E', // Neutro médio
+						600: '#33383F',
+						700: '#272B30',
+						800: '#1A1D1F',
+						900: '#111315', // Mais escuro
+					},
+				},
+				shades: {
+					base: {
+						200: '#9A9FA5',
+						400: '#6F767E',
+						600: '#6F767E',
+						800: '#33383F',
+					},
+				},
+				primary: {
+					blue: '#2A85FF', // Azul principal
+					green: '#83BF6E', // Verde principal
+					red: '#FF6A55', // Vermelho principal
+					purple: '#8E59FF', // Roxo principal
+				},
+				secondary: {
+					orange: '#FFBC99', // Secundário laranja
+					lavender: '#CABDFF',
+					lightblue: '#B1E5FC',
+					mint: '#B5E4CA',
+					yellow: '#FFD88D',
 				},
 			},
 			borderRadius: {
@@ -26,5 +55,5 @@ const config: Config = {
 		},
 	},
 	plugins: [require('tailwindcss-animate')],
-}
-export default config
+};
+export default config;

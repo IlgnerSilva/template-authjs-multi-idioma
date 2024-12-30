@@ -20,9 +20,11 @@
     "clsx": "^2.1.1",
     "dotenv": "^16.4.7",
     "drizzle-orm": "^0.36.4",
+    "drizzle-zod": "^0.6.1",
     "input-otp": "^1.4.1",
     "iron-session": "^8.0.4",
     "lucide-react": "^0.460.0",
+    "motion": "^11.15.0",
     "mysql2": "^3.11.5",
     "next": "15.0.4",
     "next-auth": "5.0.0-beta.25",
@@ -34,7 +36,9 @@
     "resend": "^4.0.1",
     "tailwind-merge": "^2.5.5",
     "tailwindcss-animate": "^1.0.7",
-    "zod": "^3.23.8"
+    "zod": "^3.23.8",
+    "zsa": "^0.6.0",
+    "zsa-react": "^0.2.3"
   },
   "devDependencies": {
     "@biomejs/biome": "1.9.4",

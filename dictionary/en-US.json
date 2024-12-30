@@ -1,8 +1,9 @@
 {
 	"Pages": {
 		"Login": {
-			"titleCredentials": "Enter your email below to access your account",
-			"titleOTP": "Enter the code you received by email",
+			"titleCredentials": "Or continue with email and password.",
+			"titleOauth": "Connect using Google or GitHub",
+			"titleOTP": "We just send you a verify code. Check your inbox to get them.",
 			"messages": {
 				"error": {
 					"email": "Invalid email",
@@ -16,9 +17,9 @@
 		"Button": {
 			"login": {
 				"default": "Log in",
-				"google": "Log in with Google",
-				"facebook": "Log in with Facebook",
-				"github": "Log in with GitHub"
+				"google": "Google",
+				"facebook": "Facebook",
+				"github": "GitHub"
 			}
 		},
 		"Input": {
@@ -31,5 +32,11 @@
 				"placeholder": "Password..."
 			}
 		}
+	},
+	"ErrorsType": {
+		"INVALID_EMAIL_OR_PASSWORD": "Invalid email or password",
+		"INVALID_CODE": "Invalid code",
+		"TWO_FACTOR_REQUIRED": "Verification code required",
+		"USER_NOT_FOUND": "User not found"
 	}
 }

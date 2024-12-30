@@ -1,15 +1,14 @@
-'use client'
+'use client';
 
-import { loginCredentials } from '../(actions)/login'
-import { GoogleProvider } from './providers'
-import { Button } from '@/components/ui/button'
+import { Button } from '@/components/shared/button';
+import { SwitcherLocale } from '@/components/shared/switcher-locale';
 import {
 	Card,
 	CardContent,
 	CardDescription,
 	CardHeader,
 	CardTitle,
-} from '@/components/ui/card'
+} from '@/components/ui/card';
 import {
 	Form,
 	FormControl,
@@ -18,53 +17,58 @@ import {
 	FormItem,
 	FormLabel,
 	FormMessage,
-} from '@/components/ui/form'
-import { Input } from '@/components/ui/input'
-import { SwitcherLocale } from '@/components/shared/switcher-locale'
-import { zodResolver } from '@hookform/resolvers/zod'
-import { Loader2 } from 'lucide-react'
-import { useTranslations } from 'next-intl'
-import { useState, useTransition } from 'react'
-import { useForm } from 'react-hook-form'
-import { z } from 'zod'
+} from '@/components/ui/form';
+import { Input, InputGroup } from '@/components/ui/input';
 import {
 	InputOTP,
 	InputOTPGroup,
 	InputOTPSlot,
-} from '../../../../../components/ui/input-otp'
-import { Label } from '@/components/ui/label'
-
-
+} from '@/components/ui/input-otp';
+import { ERROR_TYPES } from '@/lib/errors';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { KeyRound, Mail } from 'lucide-react';
+import { AnimatePresence, motion } from 'motion/react';
+import { useTranslations } from 'next-intl';
+import { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { z } from 'zod';
+import { useServerAction } from 'zsa-react';
+import { loginCredentials } from '../(actions)/login';
+import { GoogleProvider } from './providers';
 
 export function LoginForm() {
-	const [isPending, startTransition] = useTransition()
-	const [showOTP, setShowOTP] = useState(false)
-	const [err, setErr] = useState<string | null>(null)
-	const p = useTranslations('Pages')
-	const c = useTranslations('Components')
-	
+	const [showOTP, setShowOTP] = useState(false);
+	const [erro, setErro] = useState<string | null>(null);
+	const p = useTranslations('Pages');
+	const c = useTranslations('Components');
+	const erros = useTranslations('ErrorsType');
+	const { isPending, execute } = useServerAction(loginCredentials);
+
 	const CredentialsSchema = z.object({
 		email: z.string().email(p('Login.messages.error.email')),
 		password: z.string().min(6, p('Login.messages.error.password')),
 		code: z.optional(z.string()),
-	})
-	
-	function onSubmit(values: z.infer<typeof CredentialsSchema>) {
-		startTransition(() => {
-			;(async () => {
-				const result = await loginCredentials(values)
-				if (!result) {
-					return
-				}
+	});
 
-				if (result.type !== 'twoFactorAuthentication') {
-					result.erro && setErr(result.message)
-					return
-				}
-				setShowOTP(true)
-				setErr(null)
-			})()
-		})
+	async function onSubmit(values: z.infer<typeof CredentialsSchema>) {
+		const [data, err] = await execute(values);
+		if (data?.type !== ERROR_TYPES.TWO_FACTOR_REQUIRED) {
+			switch (data?.type) {
+				case ERROR_TYPES.INVALID_EMAIL_OR_PASSWORD:
+					setErro(erros('INVALID_EMAIL_OR_PASSWORD'));
+					break;
+				case ERROR_TYPES.INVALID_CODE:
+					setErro(erros('INVALID_CODE'));
+					break;
+				case ERROR_TYPES.USER_NOT_FOUND:
+					setErro(erros('USER_NOT_FOUND'));
+					break;
+			}
+			console.log(erro);
+			return;
+		}
+		setShowOTP(true);
+		setErro(null);
 	}
 
 	const form = useForm<z.infer<typeof CredentialsSchema>>({
@@ -74,129 +78,179 @@ export function LoginForm() {
 			password: '',
 			code: '',
 		},
-	})
+	});
 
 	return (
-		<div className="w-96 mx-2">
-			<div>
-				<div className="mb-5">
-					<h2 className="text-center font-bold text-gray-100">Sua Logo</h2>
-				</div>
-			</div>
-			<Card className="mx-auto max-w-96">
-				<CardHeader>
-					<div className="flex justify-center">
-						<CardTitle className="text-2xl">Sign in</CardTitle>
+		<div className="w-80">
+			<Card className="mx-auto max-w-80 border-0  flex flex-col gap-5">
+				<CardHeader className="gap-8 pb-0">
+					<div className="flex flex-col">
+						<CardTitle className="text-5xl font-semibold text-neutral-base-800">
+							Sign in
+						</CardTitle>
 					</div>
-					<CardDescription className="text-center text-gray-base font-medium">
-						{!showOTP && p('Login.titleCredentials')}
-					</CardDescription>
+					{!showOTP && (
+						<>
+							<CardDescription className="text-gray-base font-medium">
+								<div className="flex flex-col gap-3">
+									<span className="font-bold text-neutral-base-800">
+										{!showOTP && p('Login.titleOauth')}
+									</span>
+									<div className="flex gap-2">
+										<GoogleProvider text={c('Button.login.google')} />
+										<GoogleProvider text={c('Button.login.google')} />
+									</div>
+								</div>
+							</CardDescription>
+							<hr className="border-0 h-[2px] bg-neutral-base-200 rounded-full" />
+						</>
+					)}
 				</CardHeader>
 				<CardContent>
 					<div className="grid gap-4">
 						<Form {...form}>
 							<form onSubmit={form.handleSubmit(onSubmit)}>
 								{!showOTP && (
-									<>
-										<div className="grid gap-2">
+									<AnimatePresence>
+										<motion.div
+											key="credentials"
+											initial={{ opacity: 0, scale: 0 }}
+											animate={{ opacity: 1, scale: 1 }}
+											transition={{
+												duration: 0.4,
+												scale: {
+													type: 'spring',
+													visualDuration: 0.4,
+													bounce: 0.5,
+												},
+											}}
+											className="grid gap-2 mb-2"
+										>
+											<span className="font-bold text-neutral-base-800 text-[14px]">
+												{!showOTP && p('Login.titleCredentials')}
+											</span>
 											<FormField
 												name="email"
 												control={form.control}
 												render={({ field }) => (
 													<FormItem>
+														<FormControl>
+															<InputGroup>
+																<Mail className="text-neutral-base-500" />
+																<Input
+																	className="ring-0"
+																	autoComplete="off"
+																	placeholder={c('Input.email.placeholder')}
+																	{...field}
+																/>
+															</InputGroup>
+														</FormControl>
 														<FormDescription>
 															<FormMessage />
 														</FormDescription>
-														<Label className="text-xs text-gray-opacity">
-															{c('Input.email.label')}
-														</Label>
-														<FormControl>
-															<Input
-																className="ring-0"
-																placeholder={c('Input.email.placeholder')}
-																{...field}
-															/>
-														</FormControl>
 													</FormItem>
 												)}
 											/>
-										</div>
-										<div className="grid gap-2 mt-5">
+										</motion.div>
+										<motion.div
+											initial={{ opacity: 0, scale: 0 }}
+											animate={{ opacity: 1, scale: 1 }}
+											transition={{
+												duration: 0.4,
+												scale: {
+													type: 'spring',
+													visualDuration: 0.4,
+													bounce: 0.5,
+												},
+											}}
+											className="grid gap-2 mb-2"
+										>
 											<FormField
 												name="password"
 												control={form.control}
 												render={({ field }) => (
 													<FormItem>
+														<FormControl>
+															<InputGroup>
+																<KeyRound className="text-neutral-base-500" />
+																<Input
+																	type="password"
+																	placeholder={c('Input.password.placeholder')}
+																	{...field}
+																/>
+															</InputGroup>
+														</FormControl>
 														<FormDescription>
 															<FormMessage />
 														</FormDescription>
-														<Label className="text-xs text-gray-opacity">
-															{c('Input.password.label')}
-														</Label>
-														<FormControl>
-															<Input
-																type="password"
-																placeholder={c('Input.password.placeholder')}
-																{...field}
-															/>
-														</FormControl>
 													</FormItem>
 												)}
 											/>
-										</div>
-									</>
+										</motion.div>
+									</AnimatePresence>
 								)}
 								{showOTP && (
-									<div>
-										<FormField
-											control={form.control}
-											name="code"
-											render={({ field }) => (
-												<FormItem>
-													<FormLabel>{p('Login.titleOTP')}</FormLabel>
-													<FormControl className="justify-center">
-														<InputOTP
-															className="justify-center"
-															maxLength={6}
-															{...field}
-														>
-															<InputOTPGroup>
-																<InputOTPSlot index={0} />
-																<InputOTPSlot index={1} />
-																<InputOTPSlot index={2} />
-															</InputOTPGroup>
-															<InputOTPGroup>
-																<InputOTPSlot index={3} />
-																<InputOTPSlot index={4} />
-																<InputOTPSlot index={5} />
-															</InputOTPGroup>
-														</InputOTP>
-													</FormControl>
-													<FormMessage />
-												</FormItem>
-											)}
-										/>
-									</div>
+									<AnimatePresence>
+										<motion.div
+											key="otp"
+											initial={{ opacity: 0, scale: 0 }}
+											animate={{ opacity: 1, scale: 1 }}
+											transition={{
+												duration: 0.4,
+												scale: {
+													type: 'spring',
+													visualDuration: 0.4,
+													bounce: 0.5,
+												},
+											}}
+										>
+											<FormField
+												control={form.control}
+												name="code"
+												render={({ field }) => (
+													<FormItem>
+														<FormLabel>{p('Login.titleOTP')}</FormLabel>
+														<FormControl className="justify-center">
+															<InputOTP
+																className="justify-center"
+																maxLength={6}
+																{...field}
+															>
+																<InputOTPGroup>
+																	<InputOTPSlot index={0} />
+																	<InputOTPSlot index={1} />
+																	<InputOTPSlot index={2} />
+																</InputOTPGroup>
+																<InputOTPGroup>
+																	<InputOTPSlot index={3} />
+																	<InputOTPSlot index={4} />
+																	<InputOTPSlot index={5} />
+																</InputOTPGroup>
+															</InputOTP>
+														</FormControl>
+														<FormMessage />
+													</FormItem>
+												)}
+											/>
+										</motion.div>
+									</AnimatePresence>
 								)}
-								{err && <p className="text-red-500">{err}</p>}
-								<Button
-									disabled={isPending}
-									type="submit"
-									className="w-full mt-5 bg-primary hover:bg-primary/80"
-								>
-									{isPending && (
-										<Loader2 className="mr-2 h-4 w-4 animate-spin" />
-									)}{' '}
-									{c('Button.login.default')}
-								</Button>
+								{erro && (
+									<FormDescription>
+										<p className="text-primary-red">{erro}</p>
+									</FormDescription>
+								)}
+								<div className="mt-5">
+									<Button isLoading={isPending} type="submit" variant="primary">
+										<Button.Title>{c('Button.login.default')}</Button.Title>
+									</Button>
+								</div>
 							</form>
 						</Form>
-
-						<GoogleProvider text={c('Button.login.google')} />
 					</div>
 				</CardContent>
 			</Card>
 			<SwitcherLocale />
 		</div>
-	)
+	);
 }

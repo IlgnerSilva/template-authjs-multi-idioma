@@ -1,8 +1,9 @@
 {
 	"Pages": {
 		"Login": {
-			"titleCredentials": "Digite seu e-mail abaixo para acessar sua conta",
-			"titleOTP": "Digite o código que você recebeu por e-mail",
+			"titleCredentials": "Ou continue com o e-mail e senha.",
+			"titleOauth": "Conecte-se usando",
+			"titleOTP": "Acabamos de lhe enviar um código de verificação por email. Verifique sua caixa de entrada.",
 			"messages": {
 				"error": {
 					"email": "E-mail inválido",
@@ -16,9 +17,9 @@
 		"Button": {
 			"login": {
 				"default": "Entrar",
-				"google": "Entrar com Google",
-				"facebook": "Entrar com Facebook",
-				"github": "Entrar com GitHub"
+				"google": "Google",
+				"facebook": "Facebook",
+				"github": "GitHub"
 			}
 		},
 		"Input": {
@@ -31,5 +32,11 @@
 				"placeholder": "Senha..."
 			}
 		}
+	},
+	"ErrorsType": {
+		"INVALID_EMAIL_OR_PASSWORD": "Usuário ou senha inválidos",
+		"INVALID_CODE": "Código inválido",
+		"TWO_FACTOR_REQUIRED": "Código de verificação requerido",
+		"USER_NOT_FOUND": "Usuário não encontrado"
 	}
 }
