@@ -1,10 +1,10 @@
-import { env } from '@/env'
-import { defineConfig } from 'drizzle-kit'
+import { env } from '@/env/server';
+import { defineConfig } from 'drizzle-kit';
 
-const url = env.DATABASE_URL // Ou outra lógica para definir a URL
+const url = env.DATABASE_URL; // Ou outra lógica para definir a URL
 
 if (!url) {
-	throw new Error('DATABASE_URL must be defined')
+	throw new Error('DATABASE_URL must be defined');
 }
 
 export default defineConfig({
@@ -14,4 +14,4 @@ export default defineConfig({
 	dbCredentials: {
 		url: url,
 	},
-})
+});

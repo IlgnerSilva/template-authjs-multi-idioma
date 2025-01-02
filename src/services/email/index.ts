@@ -1,16 +1,16 @@
-import { env } from '@/env'
+import { env } from '@/env/server';
 
-import { EmailTemplate } from '@/lib/templates/email'
-import { Resend } from 'resend'
+import { EmailTemplate } from '@/lib/templates/email';
+import { Resend } from 'resend';
 
 interface Email {
-	email: string
-	subject: string
-	message: string
-	type: 'code' | 'message'
+	email: string;
+	subject: string;
+	message: string;
+	type: 'code' | 'message';
 }
 
-const resend = new Resend(env.RESEND_API_KEY)
+const resend = new Resend(env.RESEND_API_KEY);
 
 export async function sendEmail({ email, message, subject, type }: Email) {
 	const { error, data } = await resend.emails.send({
@@ -18,11 +18,11 @@ export async function sendEmail({ email, message, subject, type }: Email) {
 		to: email,
 		subject: subject,
 		react: EmailTemplate(type, message),
-	})
+	});
 
 	if (error) {
-		throw new Error(error.message)
+		throw new Error(error.message);
 	}
 
-	return data
+	return data;
 }

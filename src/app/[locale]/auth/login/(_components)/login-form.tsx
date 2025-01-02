@@ -24,6 +24,7 @@ import {
 	InputOTPGroup,
 	InputOTPSlot,
 } from '@/components/ui/input-otp';
+import { env } from '@/env/server';
 import { ERROR_TYPES } from '@/lib/errors';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { KeyRound, Mail } from 'lucide-react';
@@ -34,7 +35,7 @@ import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { useServerAction } from 'zsa-react';
 import { loginCredentials } from '../(actions)/login';
-import { GoogleProvider } from './providers';
+import { AuthProviders } from './providers';
 
 export function LoginForm() {
 	const [showOTP, setShowOTP] = useState(false);
@@ -64,7 +65,6 @@ export function LoginForm() {
 					setErro(erros('USER_NOT_FOUND'));
 					break;
 			}
-			console.log(erro);
 			return;
 		}
 		setShowOTP(true);
@@ -90,20 +90,26 @@ export function LoginForm() {
 						</CardTitle>
 					</div>
 					{!showOTP && (
-						<>
-							<CardDescription className="text-gray-base font-medium">
-								<div className="flex flex-col gap-3">
-									<span className="font-bold text-neutral-base-800">
-										{!showOTP && p('Login.titleOauth')}
-									</span>
-									<div className="flex gap-2">
-										<GoogleProvider text={c('Button.login.google')} />
-										<GoogleProvider text={c('Button.login.google')} />
+						<div>
+							<>
+								<CardDescription className="text-gray-base font-medium">
+									<div className="flex flex-col gap-3">
+										<span className="font-bold text-neutral-base-800">
+											{!showOTP && p('Login.titleOauth')}
+										</span>
+										<div className="flex gap-2">
+											<AuthProviders
+												textOverrides={{
+													google: `${c('Button.login.google')} `,
+													github: `${c('Button.login.github')} `,
+												}}
+											/>
+										</div>
 									</div>
-								</div>
-							</CardDescription>
-							<hr className="border-0 h-[2px] bg-neutral-base-200 rounded-full" />
-						</>
+								</CardDescription>
+								<hr className="border-0 h-[2px] bg-neutral-base-200 rounded-full" />
+							</>
+						</div>
 					)}
 				</CardHeader>
 				<CardContent>
@@ -111,21 +117,8 @@ export function LoginForm() {
 						<Form {...form}>
 							<form onSubmit={form.handleSubmit(onSubmit)}>
 								{!showOTP && (
-									<AnimatePresence>
-										<motion.div
-											key="credentials"
-											initial={{ opacity: 0, scale: 0 }}
-											animate={{ opacity: 1, scale: 1 }}
-											transition={{
-												duration: 0.4,
-												scale: {
-													type: 'spring',
-													visualDuration: 0.4,
-													bounce: 0.5,
-												},
-											}}
-											className="grid gap-2 mb-2"
-										>
+									<div>
+										<div className="grid gap-2 mb-2">
 											<span className="font-bold text-neutral-base-800 text-[14px]">
 												{!showOTP && p('Login.titleCredentials')}
 											</span>
@@ -151,20 +144,8 @@ export function LoginForm() {
 													</FormItem>
 												)}
 											/>
-										</motion.div>
-										<motion.div
-											initial={{ opacity: 0, scale: 0 }}
-											animate={{ opacity: 1, scale: 1 }}
-											transition={{
-												duration: 0.4,
-												scale: {
-													type: 'spring',
-													visualDuration: 0.4,
-													bounce: 0.5,
-												},
-											}}
-											className="grid gap-2 mb-2"
-										>
+										</div>
+										<div className="grid gap-2 mb-2">
 											<FormField
 												name="password"
 												control={form.control}
@@ -186,8 +167,8 @@ export function LoginForm() {
 													</FormItem>
 												)}
 											/>
-										</motion.div>
-									</AnimatePresence>
+										</div>
+									</div>
 								)}
 								{showOTP && (
 									<AnimatePresence>

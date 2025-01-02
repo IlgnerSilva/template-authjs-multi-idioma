@@ -5,7 +5,7 @@ import {
 	timestamp,
 	varchar,
 } from 'drizzle-orm/mysql-core';
-//import { createSelectSchema } from 'drizzle-zod';
+//import { createInsertSchema } from 'drizzle-zod';
 
 export const tableUsers = mysqlTable('users', {
 	user_id: varchar('user_id', { length: 36 })
@@ -24,4 +24,4 @@ export const tableUsers = mysqlTable('users', {
 	image: varchar('image', { length: 255 }),
 });
 
-//export const selectUsers = createSelectSchema(tableUsers);
+//export const insertUserSchema = createInsertSchema(tableUsers);

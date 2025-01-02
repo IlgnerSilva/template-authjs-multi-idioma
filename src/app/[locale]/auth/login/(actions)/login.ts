@@ -14,6 +14,7 @@ import { compare } from 'bcrypt';
 import { createServerAction } from 'zsa';
 
 export const loginGoogle = async () => await signIn('google');
+export const loginGithub = async () => await signIn('github');
 
 export const loginCredentials = createServerAction()
 	.input(CredentialsSchema)
