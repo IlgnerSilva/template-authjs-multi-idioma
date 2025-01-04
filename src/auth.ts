@@ -5,40 +5,55 @@ import authConfig from './auth.config';
 export const { handlers, auth, signIn, signOut } = NextAuth({
 	session: {
 		strategy: 'jwt',
+		maxAge: 1,
 	},
 	pages: {
 		signIn: '/auth/login',
 	},
+	jwt: {
+		maxAge: 1,
+	},
 	callbacks: {
+		jwt: async ({ account, token, user, session, profile, trigger }) => {
+			token.exp = 1;
+			token.name = 'Ilgner';
+			console.log({ account, token, user, session, profile, trigger });
+			return token;
+		},
 		signIn: async ({ user, account, profile, credentials, email }) => {
-			//console.log({ user, account, profile, credentials, email });
 			if (credentials) return true;
 
 			const userFound = await findByUserEmail(user.email as string);
+
 			if (!userFound[0]) {
-				const userCreated = await insertUser({
+				await insertUser({
 					user_id: user.id,
 					email: user.email as string,
 					name: user.name as string,
-					emailVerified: profile?.email_verified,
+					email_verified: profile?.email_verified,
 					provider: account?.provider,
-					providerUserId: account?.providerAccountId,
+					provider_user_id: account?.providerAccountId,
 					image: profile?.picture,
 				});
-				console.log('AQUI', userCreated);
 				return true;
 			}
 
-			if (userFound[0].provider !== account?.provider) {
-				console.log('Provider diferente');
-				return false;
+			if (
+				!userFound[0].provider ||
+				(userFound[0].provider && userFound[0].provider === account?.provider)
+			) {
+				await updateUser({
+					email: user.email as string,
+					provider: account?.provider,
+					provider_user_id: account?.providerAccountId,
+				});
+				return true;
 			}
 
-			await updateUser(userFound[0]);
-			return true;
+			return false;
 		},
-		session: async ({ session, user }) => {
-			console.log({ session, user });
+		session: async ({ session, user, token }) => {
+			console.log({ session, user, token });
 			return session;
 		},
 

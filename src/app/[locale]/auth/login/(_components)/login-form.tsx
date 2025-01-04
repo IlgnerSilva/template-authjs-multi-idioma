@@ -24,7 +24,7 @@ import {
 	InputOTPGroup,
 	InputOTPSlot,
 } from '@/components/ui/input-otp';
-import { env } from '@/env/server';
+import env from '@/env/client';
 import { ERROR_TYPES } from '@/lib/errors';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { KeyRound, Mail } from 'lucide-react';
@@ -91,24 +91,26 @@ export function LoginForm() {
 					</div>
 					{!showOTP && (
 						<div>
-							<>
-								<CardDescription className="text-gray-base font-medium">
-									<div className="flex flex-col gap-3">
-										<span className="font-bold text-neutral-base-800">
-											{!showOTP && p('Login.titleOauth')}
-										</span>
-										<div className="flex gap-2">
-											<AuthProviders
-												textOverrides={{
-													google: `${c('Button.login.google')} `,
-													github: `${c('Button.login.github')} `,
-												}}
-											/>
+							{env.NEXT_PUBLIC_ENABLED_PROVIDERS && (
+								<>
+									<CardDescription className="text-gray-base font-medium">
+										<div className="flex flex-col gap-3">
+											<span className="font-bold text-neutral-base-800">
+												{!showOTP && p('Login.titleOauth')}
+											</span>
+											<div className="flex gap-2">
+												<AuthProviders
+													textOverrides={{
+														google: `${c('Button.login.google')} `,
+														github: `${c('Button.login.github')} `,
+													}}
+												/>
+											</div>
 										</div>
-									</div>
-								</CardDescription>
-								<hr className="border-0 h-[2px] bg-neutral-base-200 rounded-full" />
-							</>
+									</CardDescription>
+									<hr className="border-0 h-[2px] bg-neutral-base-200 rounded-full" />
+								</>
+							)}
 						</div>
 					)}
 				</CardHeader>

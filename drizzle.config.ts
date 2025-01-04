@@ -1,17 +1,15 @@
 import { env } from '@/env/server';
 import { defineConfig } from 'drizzle-kit';
 
-const url = env.DATABASE_URL; // Ou outra lógica para definir a URL
-
-if (!url) {
+if (!env.DATABASE_URL) {
 	throw new Error('DATABASE_URL must be defined');
 }
 
 export default defineConfig({
-	out: './src/db/',
+	out: './drizzle',
 	schema: './src/db/schemas/',
-	dialect: 'mysql',
+	dialect: 'postgresql',
 	dbCredentials: {
-		url: url,
+		url: env.DATABASE_URL,
 	},
 });

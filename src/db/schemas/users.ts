@@ -1,26 +1,25 @@
 import { randomUUID } from 'node:crypto';
 import {
 	boolean,
-	mysqlTable,
+	pgTable,
 	timestamp,
 	varchar,
-} from 'drizzle-orm/mysql-core';
-//import { createInsertSchema } from 'drizzle-zod';
+	uuid,
+} from 'drizzle-orm/pg-core';
 
-export const tableUsers = mysqlTable('users', {
-	user_id: varchar('user_id', { length: 36 })
-		.default(randomUUID())
-		.notNull()
-		.primaryKey(),
+export const tableUsers = pgTable('users', {
+	user_id: uuid('user_id').$default(() => randomUUID()),
 	email: varchar('email', { length: 255 }).notNull().unique(),
 	name: varchar('name', { length: 255 }),
 	password_hash: varchar('password_hash', { length: 255 }),
-	emailVerified: boolean('email_verified').default(false),
-	twoFactorAuthentication: boolean('two_factor_authentication').default(false),
+	email_verified: boolean('email_verified').default(false), // alterado para correspondência com a nomenclatura do banco
+	two_factor_authentication: boolean('two_factor_authentication').default(
+		false,
+	),
 	provider: varchar('provider', { length: 15 }),
-	providerUserId: varchar('provider_user_id', { length: 255 }),
-	createdAt: timestamp('created_at').defaultNow(),
-	updatedAt: timestamp('updated_at').onUpdateNow(),
+	provider_user_id: varchar('provider_user_id', { length: 255 }), // alterado para correspondência com a nomenclatura do banco
+	created_at: timestamp('created_at').defaultNow(),
+	updated_at: timestamp('updated_at').$onUpdate(() => new Date()),
 	image: varchar('image', { length: 255 }),
 });
 

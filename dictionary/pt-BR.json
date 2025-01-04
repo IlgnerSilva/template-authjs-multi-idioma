@@ -1,7 +1,7 @@
 {
 	"Pages": {
 		"Login": {
-			"titleCredentials": "Ou continue com o e-mail e senha.",
+			"titleCredentials": "Continue com o e-mail e senha.",
 			"titleOauth": "Conecte-se usando",
 			"titleOTP": "Acabamos de lhe enviar um código de verificação por email. Verifique sua caixa de entrada.",
 			"messages": {

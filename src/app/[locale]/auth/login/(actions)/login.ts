@@ -9,8 +9,8 @@ import {
 	getCodeTwoFactorAuthentication,
 } from '@/services/auth/two-factor-authentication';
 import { sendEmail } from '@/services/email';
-import { findByUserEmail } from '@/services/user';
-import { compare } from 'bcrypt';
+import { findByUserEmail, insertUser } from '@/services/user';
+import { compare, hash } from 'bcrypt';
 import { createServerAction } from 'zsa';
 
 export const loginGoogle = async () => await signIn('google');
@@ -29,7 +29,7 @@ export const loginCredentials = createServerAction()
 		if (!(await compare(input.password, user[0].password_hash as string)))
 			return createError(ERROR_TYPES.INVALID_EMAIL_OR_PASSWORD);
 
-		if (!user[0].twoFactorAuthentication) {
+		if (user[0].two_factor_authentication) {
 			if (input.code) {
 				if (input.code === (await getCodeTwoFactorAuthentication())) {
 					await destroyCodeTwoFactorAuthentication();

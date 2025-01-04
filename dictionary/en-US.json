@@ -1,7 +1,7 @@
 {
 	"Pages": {
 		"Login": {
-			"titleCredentials": "Or continue with email and password.",
+			"titleCredentials": "Continue with email and password.",
 			"titleOauth": "Connect using Google or GitHub",
 			"titleOTP": "We just send you a verify code. Check your inbox to get them.",
 			"messages": {
