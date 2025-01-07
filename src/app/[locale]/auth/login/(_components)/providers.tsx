@@ -40,7 +40,7 @@ export function AuthProviders({ textOverrides }: AuthProvidersProps) {
 		.filter((provider): provider is ProviderType => provider in PROVIDERS);
 
 	return (
-		<div className="w-full flex gap-2">
+		<div className="w-full flex gap-2 mb-6">
 			{enabledProviders.map((provider) => {
 				const providerConfig = PROVIDERS[provider];
 				const { login, icon: Icon, text } = providerConfig;

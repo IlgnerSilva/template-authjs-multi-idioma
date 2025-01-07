@@ -1,26 +1,16 @@
 import { findByUserEmail, insertUser, updateUser } from '@/services/user';
-import NextAuth from 'next-auth';
+import NextAuth, { type Session } from 'next-auth';
 import authConfig from './auth.config';
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
-	session: {
-		strategy: 'jwt',
-		maxAge: 1,
-	},
 	pages: {
 		signIn: '/auth/login',
 	},
-	jwt: {
-		maxAge: 1,
+	session: {
+		strategy: 'jwt',
 	},
 	callbacks: {
-		jwt: async ({ account, token, user, session, profile, trigger }) => {
-			token.exp = 1;
-			token.name = 'Ilgner';
-			console.log({ account, token, user, session, profile, trigger });
-			return token;
-		},
-		signIn: async ({ user, account, profile, credentials, email }) => {
+		signIn: async ({ user, account, profile, credentials }) => {
 			if (credentials) return true;
 
 			const userFound = await findByUserEmail(user.email as string);
@@ -42,21 +32,42 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
 				!userFound[0].provider ||
 				(userFound[0].provider && userFound[0].provider === account?.provider)
 			) {
-				await updateUser({
-					email: user.email as string,
-					provider: account?.provider,
-					provider_user_id: account?.providerAccountId,
-				});
+				if (!userFound[0].name || !userFound[0].email_verified) {
+					await updateUser({
+						email: user.email as string,
+						name: userFound[0].name ?? user.name,
+						email_verified: true,
+						provider: account?.provider,
+						provider_user_id: account?.providerAccountId,
+					});
+				}
 				return true;
 			}
-
 			return false;
 		},
-		session: async ({ session, user, token }) => {
-			console.log({ session, user, token });
-			return session;
+		jwt: async ({ token, user, trigger, session }) => {
+			if (trigger && trigger === 'update' && session) {
+				token.two_factor_authentication =
+					session.user.two_factor_authentication;
+				return token;
+			}
+			return token;
 		},
-
+		session: async ({ session, token }) => {
+			if (session.user && token.sub) {
+				session.user.id = token.sub;
+			}
+			return {
+				...session,
+				user: {
+					...session.user,
+					access_token: token.access_token,
+					expires_at: token.expires_at,
+					refresh_token: token.refresh_token,
+				},
+				expires: 60,
+			};
+		},
 		redirect: async ({ url, baseUrl }) => {
 			if (url.startsWith('/')) {
 				return `${baseUrl}${url}`;
@@ -64,7 +75,18 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
 			return url;
 		},
 	},
-
-	debug: false,
+	secret: process.env.AUTH_SECRET,
+	cookies: {
+		sessionToken: {
+			name: 'test',
+			options: {
+				path: '/',
+				httpOnly: true,
+				sameSite: 'lax',
+				secure: process.env.NODE_ENV === 'production',
+				maxAge: 60,
+			},
+		},
+	},
 	...authConfig,
 });

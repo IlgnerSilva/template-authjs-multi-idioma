@@ -1,11 +1,11 @@
-import { randomUUID } from 'node:crypto';
 import {
 	boolean,
 	pgTable,
 	timestamp,
-	varchar,
 	uuid,
+	varchar,
 } from 'drizzle-orm/pg-core';
+import { v4 as randomUUID } from 'uuid';
 
 export const tableUsers = pgTable('users', {
 	user_id: uuid('user_id').$default(() => randomUUID()),

@@ -74,8 +74,8 @@ export function LoginForm() {
 	const form = useForm<z.infer<typeof CredentialsSchema>>({
 		resolver: zodResolver(CredentialsSchema),
 		defaultValues: {
-			email: '',
-			password: '',
+			email: 'sentinex.developer@gmail.com',
+			password: '12345678',
 			code: '',
 		},
 	});
