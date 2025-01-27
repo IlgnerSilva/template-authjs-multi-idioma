@@ -13,13 +13,18 @@
 		"isolatedModules": true,
 		"jsx": "preserve",
 		"incremental": true,
+		"emitDecoratorMetadata": true,
+		"experimentalDecorators": true,
 		"plugins": [
 			{
 				"name": "next"
 			}
 		],
 		"paths": {
-			"@/*": ["./src/*"]
+			"@/*": ["./src/*"],
+			"@core/*": ["./src/@core/*"],
+			"@application/*": ["./src/@application/*"],
+			"@drizzle/*": ["./drizzle/*"]
 		}
 	},
 	"include": [

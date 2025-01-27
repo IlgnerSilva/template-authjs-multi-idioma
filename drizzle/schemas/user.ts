@@ -1,3 +1,4 @@
+import { randomUUID } from 'node:crypto';
 import {
 	boolean,
 	pgTable,
@@ -5,10 +6,16 @@ import {
 	uuid,
 	varchar,
 } from 'drizzle-orm/pg-core';
-import { v4 as randomUUID } from 'uuid';
+
+type OptionalFields<T> = {
+	[K in keyof T]: null | undefined extends T[K] ? T[K] | undefined : T[K];
+};
 
 export const tableUsers = pgTable('users', {
-	user_id: uuid('user_id').$default(() => randomUUID()),
+	user_id: uuid('user_id')
+		.$default(() => randomUUID())
+		.notNull()
+		.primaryKey(),
 	email: varchar('email', { length: 255 }).notNull().unique(),
 	name: varchar('name', { length: 255 }),
 	password_hash: varchar('password_hash', { length: 255 }),
@@ -23,4 +30,6 @@ export const tableUsers = pgTable('users', {
 	image: varchar('image', { length: 255 }),
 });
 
+export type User = typeof tableUsers.$inferSelect;
+export type UsersCreateInput = OptionalFields<typeof tableUsers.$inferInsert>;
 //export const insertUserSchema = createInsertSchema(tableUsers);

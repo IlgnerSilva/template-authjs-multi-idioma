@@ -47,7 +47,7 @@ export function LoginForm() {
 
 	const CredentialsSchema = z.object({
 		email: z.string().email(p('Login.messages.error.email')),
-		password: z.string().min(6, p('Login.messages.error.password')),
+		password: z.string({message: p('Login.messages.error.password.error'), required_error: p('Login.messages.error.password.required')} ),
 		code: z.optional(z.string()),
 	});
 
