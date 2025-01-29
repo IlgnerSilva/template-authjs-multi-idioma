@@ -17,6 +17,7 @@ export class AuthenticateWithCredentialsUseCase {
 	}: AuthenticateWithCredentialsUseCaseRequest) {
 		const usersRepository = getInjection('IUserRepository');
 		const [user] = await usersRepository.findByEmail(email);
+
 		if (!user) throw createError(ERROR_TYPES.USER_NOT_FOUND);
 		const passwordHasher = getInjection('IPasswordHasherRepository');
 
@@ -29,13 +30,19 @@ export class AuthenticateWithCredentialsUseCase {
 			if (code) {
 				// biome-ignore lint/suspicious/noDoubleEquals: <explanation>
 				if (code == '123456')
-					return await signIn('credentials', { values: user });
+					return await signIn('credentials', {
+						user_id: user.id,
+						name: user.name,
+						email: user.email,
+						provider: user.provider,
+						picture: user.image,
+					});
 				return createError(ERROR_TYPES.INVALID_CODE);
 			}
 
 			return createError(ERROR_TYPES.TWO_FACTOR_REQUIRED);
 		}
 
-		return await signIn('credentials', { values: user });
+		return await signIn('credentials', user);
 	}
 }

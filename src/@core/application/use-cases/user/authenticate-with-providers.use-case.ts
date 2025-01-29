@@ -1,20 +1,19 @@
+import { getInjection } from '@/@core/di/container';
 import { User } from '@core/domain/entities/user.entity';
 import type {
 	IUserRepository,
 	IUsersRepositoryRequest,
 } from '@core/domain/repositories/user.repository.interface';
 
+// biome-ignore lint/complexity/noStaticOnlyClass: <explanation>
 export class AutheticateWithProvidersUseCase {
-	constructor(private usersRepository: IUserRepository) {}
-
-	async execute(userProvider: IUsersRepositoryRequest) {
-		const userFound = await this.usersRepository.findByEmail(
-			userProvider.email,
-		);
+	static async execute(userProvider: IUsersRepositoryRequest) {
+		const usersRepository = getInjection('IUserRepository');
+		const userFound = await usersRepository.findByEmail(userProvider.email);
 
 		if (!userFound) {
 			const user = new User(userProvider);
-			await this.usersRepository.insertUser(user);
+			await usersRepository.insertUser(user);
 			return true;
 		}
 
@@ -23,7 +22,7 @@ export class AutheticateWithProvidersUseCase {
 		if (!provider || (provider && provider === userProvider?.provider)) {
 			if (!name || !email_verified) {
 				const user = new User(userProvider);
-				await this.usersRepository.updateUser(user);
+				await usersRepository.updateUser(user);
 			}
 			return true;
 		}

@@ -62,6 +62,10 @@ export class User {
 		return this.props.image;
 	}
 
+	toJSON() {
+		return this.props;
+	}
+
 	private validate() {
 		userProposSchema.parse(this.props);
 	}

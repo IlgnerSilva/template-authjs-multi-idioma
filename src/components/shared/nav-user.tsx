@@ -26,6 +26,8 @@ import {
 	useSidebar,
 } from '@/components/ui/sidebar';
 
+import { logout } from '@/app/[locale]/auth/login/(actions)/logout';
+
 export function NavUser({
 	user,
 }: {
@@ -98,9 +100,11 @@ export function NavUser({
 							</DropdownMenuItem>
 						</DropdownMenuGroup>
 						<DropdownMenuSeparator />
-						<DropdownMenuItem>
-							<LogOut />
-							Log out
+						<DropdownMenuItem
+							className="cursor-pointer"
+							onClick={async () => await logout()}
+						>
+							<LogOut /> Logout
 						</DropdownMenuItem>
 					</DropdownMenuContent>
 				</DropdownMenu>

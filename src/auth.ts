@@ -4,30 +4,26 @@ import NextAuth, { type Session } from 'next-auth';
 import authConfig from './auth.config';
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
+	...authConfig,
 	pages: {
 		signIn: '/auth/login',
 	},
 	callbacks: {
 		signIn: async ({ user, account, profile, credentials }) => {
-			console.log(credentials);
 			if (credentials) return true;
 
-			const usersRepository = new DrizzleUsersRepository();
-			const autheticateWithProvidersUseCase =
-				new AutheticateWithProvidersUseCase(usersRepository);
-
-			return await autheticateWithProvidersUseCase.execute({
+			return await AutheticateWithProvidersUseCase.execute({
 				name: user.name,
 				email: user.email as string,
 				provider: account?.provider,
 				image: profile?.picture,
 			});
 		},
-		jwt: async ({ token, user, trigger, session }) => {
-			return token;
+		async jwt({ token, user }) {
+			return { ...token, ...user };
 		},
-		session: async ({ session, token }) => {
-			return session;
+		async session({ session, user, token }) {
+			return { ...session, ...token };
 		},
 		redirect: async ({ url, baseUrl }) => {
 			if (url.startsWith('/')) {
@@ -36,5 +32,4 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
 			return url;
 		},
 	},
-	...authConfig,
 });
