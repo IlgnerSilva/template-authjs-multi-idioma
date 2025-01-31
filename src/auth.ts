@@ -1,6 +1,5 @@
-import { DrizzleUsersRepository } from '@/@core/infra/repositories/drizzle.users.repository';
 import { AutheticateWithProvidersUseCase } from '@core/application/use-cases/user/authenticate-with-providers.use-case';
-import NextAuth, { type Session } from 'next-auth';
+import NextAuth from 'next-auth';
 import authConfig from './auth.config';
 
 export const { handlers, auth, signIn, signOut } = NextAuth({

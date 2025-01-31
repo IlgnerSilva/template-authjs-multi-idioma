@@ -26,7 +26,7 @@ import {
 	useSidebar,
 } from '@/components/ui/sidebar';
 
-import { logout } from '@/app/[locale]/auth/login/(actions)/logout';
+import { logout } from '@/app/(public)/[locale]/auth/login/(actions)/logout';
 
 export function NavUser({
 	user,

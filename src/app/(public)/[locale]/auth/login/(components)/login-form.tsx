@@ -1,6 +1,7 @@
 'use client';
 
 import { Button } from '@/components/shared/button';
+import { Input, InputGroup } from '@/components/shared/input';
 import { SwitcherLocale } from '@/components/shared/switcher-locale';
 import {
 	Card,
@@ -18,7 +19,6 @@ import {
 	FormLabel,
 	FormMessage,
 } from '@/components/ui/form';
-import { Input, InputGroup } from '@/components/ui/input';
 import {
 	InputOTP,
 	InputOTPGroup,
@@ -47,7 +47,10 @@ export function LoginForm() {
 
 	const CredentialsSchema = z.object({
 		email: z.string().email(p('Login.messages.error.email')),
-		password: z.string({message: p('Login.messages.error.password.error'), required_error: p('Login.messages.error.password.required')} ),
+		password: z.string({
+			message: p('Login.messages.error.password.error'),
+			required_error: p('Login.messages.error.password.required'),
+		}),
 		code: z.optional(z.string()),
 	});
 

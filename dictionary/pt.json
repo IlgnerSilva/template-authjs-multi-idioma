@@ -9,7 +9,7 @@
 					"email": "E-mail inválido",
 					"password": {
 						"error": "Usuário ou senha inválidos",
-						"required": "Preencha o campo senha" 
+						"required": "Preencha o campo senha"
 					},
 					"credentials": "Usuário ou senha inválidos"
 				}

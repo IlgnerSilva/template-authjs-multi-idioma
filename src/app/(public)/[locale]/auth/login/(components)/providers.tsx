@@ -1,10 +1,7 @@
-import {
-	loginGithub,
-	loginGoogle,
-} from '@/app/[locale]/auth/login/(actions)/login';
 import { Button } from '@/components/shared/button';
 import { GitHub, Google } from '@/components/shared/icons';
 import env from '@/env/client';
+import { loginGithub, loginGoogle } from '../(actions)/login';
 
 type ProviderType = 'google' | 'github';
 
