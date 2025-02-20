@@ -1,13 +1,77 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
 
-body {
-	font-family: Arial, Helvetica, sans-serif;
+@custom-variant dark (&:is(.dark *));
+
+@theme {
+	--color-background: var(--background);
+	--color-foreground: var(--foreground);
+
+	--color-neutral-base-100: #ffffff;
+	--color-neutral-base-200: #efefef;
+	--color-neutral-base-300: #f4f4f4;
+	--color-neutral-base-400: #efefef;
+	--color-neutral-base-500: #6f767e;
+	--color-neutral-base-600: #33383f;
+	--color-neutral-base-700: #272b30;
+	--color-neutral-base-800: #1a1d1f;
+	--color-neutral-base-900: #111315;
+
+	--color-shades-base-200: #9a9fa5;
+	--color-shades-base-400: #6f767e;
+	--color-shades-base-600: #6f767e;
+	--color-shades-base-800: #33383f;
+
+	--color-primary-blue: #2a85ff;
+	--color-primary-green: #83bf6e;
+	--color-primary-red: #ff6a55;
+	--color-primary-purple: #8e59ff;
+
+	--color-secondary-orange: #ffbc99;
+	--color-secondary-lavender: #cabdff;
+	--color-secondary-lightblue: #b1e5fc;
+	--color-secondary-mint: #b5e4ca;
+	--color-secondary-yellow: #ffd88d;
+
+	--color-sidebar: hsl(var(--sidebar-background));
+	--color-sidebar-foreground: hsl(var(--sidebar-foreground));
+	--color-sidebar-primary: hsl(var(--sidebar-primary));
+	--color-sidebar-primary-foreground: hsl(var(--sidebar-primary-foreground));
+	--color-sidebar-accent: hsl(var(--sidebar-accent));
+	--color-sidebar-accent-foreground: hsl(var(--sidebar-accent-foreground));
+	--color-sidebar-border: hsl(var(--sidebar-border));
+	--color-sidebar-ring: hsl(var(--sidebar-ring));
+
+	--radius-lg: var(--radius);
+	--radius-md: calc(var(--radius) - 2px);
+	--radius-sm: calc(var(--radius) - 4px);
+}
+
+/*
+  The default border color has changed to `currentColor` in Tailwind CSS v4,
+  so we've added these compatibility styles to make sure everything still
+  looks the same as it did with Tailwind CSS v3.
+
+  If we ever want to remove these styles, we need to add an explicit border
+  color utility to any element that depends on these defaults.
+*/
+@layer base {
+	*,
+	::after,
+	::before,
+	::backdrop,
+	::file-selector-button {
+		border-color: var(--color-gray-200, currentColor);
+	}
+}
+
+@layer utilities {
+	body {
+		font-family: Arial, Helvetica, sans-serif;
+	}
 }
 
 @layer base {
-  :root {
+	:root {
 		--radius: 0.5rem;
 		--sidebar-background: 0 0% 98%;
 		--sidebar-foreground: 240 5.3% 26.1%;
@@ -18,7 +82,7 @@ body {
 		--sidebar-border: 220 13% 91%;
 		--sidebar-ring: 217.2 91.2% 59.8%;
 	}
-  .dark {
+	.dark {
 		--sidebar-background: 240 5.9% 10%;
 		--sidebar-foreground: 240 4.8% 95.9%;
 		--sidebar-primary: 224.3 76.3% 48%;
