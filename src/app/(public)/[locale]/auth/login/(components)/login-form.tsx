@@ -36,6 +36,7 @@ import { z } from 'zod';
 import { useServerAction } from 'zsa-react';
 import { loginCredentials } from '../(actions)/login';
 import { AuthProviders } from './providers';
+import { toast, Toaster } from 'sonner';
 
 export function LoginForm() {
 	const [showOTP, setShowOTP] = useState(false);
@@ -59,13 +60,13 @@ export function LoginForm() {
 		if (data?.type !== ERROR_TYPES.TWO_FACTOR_REQUIRED) {
 			switch (data?.type) {
 				case ERROR_TYPES.INVALID_EMAIL_OR_PASSWORD:
-					setErro(erros('INVALID_EMAIL_OR_PASSWORD'));
+					toast.error(erros('INVALID_EMAIL_OR_PASSWORD'));
 					break;
 				case ERROR_TYPES.INVALID_CODE:
-					setErro(erros('INVALID_CODE'));
+					toast.error(erros('INVALID_CODE'));
 					break;
 				case ERROR_TYPES.USER_NOT_FOUND:
-					setErro(erros('USER_NOT_FOUND'));
+					toast.error(erros('USER_NOT_FOUND'));
 					break;
 			}
 			return;
@@ -236,6 +237,7 @@ export function LoginForm() {
 					</div>
 				</CardContent>
 			</Card>
+			<Toaster position="top-center" richColors />
 			<SwitcherLocale />
 		</div>
 	);

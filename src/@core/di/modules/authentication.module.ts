@@ -4,7 +4,6 @@ import type { IPasswordHasherRepository } from '@core/domain/repositories/passwo
 import type { IUserRepository } from '@core/domain/repositories/user.repository.interface';
 import { BcryptPasswordHasherRepository } from '@core/domain/entities/bcrypt.password-hasher.repository';
 import { DrizzleUsersRepository } from '@core/infra/repositories/drizzle.users.repository';
-import { AuthenticateWithCredentialsUseCase } from '@core/application/use-cases/user/authenticate-with-credentials.use-case';
 
 const initializeModule = (bind: interfaces.Bind) => {
 	bind<IPasswordHasherRepository>(DI_SYMBOLS.IPasswordHasherRepository).to(

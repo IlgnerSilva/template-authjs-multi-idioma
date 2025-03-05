@@ -1,5 +1,5 @@
 import { AppSidebar } from '@/components/shared/app-sidebar';
-import { SidebarRight } from '@/components/shared/sidebar-right';
+import { TeamSwitcher } from '@/components/shared/team-switch/team-switcher.shared.component';
 import {
 	Breadcrumb,
 	BreadcrumbItem,
@@ -13,6 +13,8 @@ import {
 	SidebarInset,
 	SidebarProvider,
 	SidebarTrigger,
+	Sidebar,
+	SidebarHeader,
 } from '@/components/ui/sidebar';
 import { SessionProvider } from 'next-auth/react';
 
@@ -50,7 +52,6 @@ export default function Page() {
 						<div className="min-h-[100vh] flex-1 rounded-xl bg-red-500/50 md:min-h-min" />
 					</div>
 				</SidebarInset>
-				<SidebarRight />
 			</SidebarProvider>
 		</SessionProvider>
 	);

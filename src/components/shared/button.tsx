@@ -19,7 +19,7 @@ function Button({
 		<button
 			disabled={isLoading}
 			className={`
-				flex justify-center gap-2 items-center h-10 max-h-10 py-3 rounded-xl w-full 
+				flex justify-center gap-2 items-center h-10 max-h-10 py-3 rounded-xl w-full cursor-pointer
 				${isLoading ? 'cursor-not-allowed opacity-50' : ''} 
 				${variant === 'primary' ? 'bg-primary-blue text-neutral-base-100' : ''} 
 				${variant === 'provider' ? 'bg-neutral-base-100 ring-2 ring-neutral-base-200 font-bold' : ''}
