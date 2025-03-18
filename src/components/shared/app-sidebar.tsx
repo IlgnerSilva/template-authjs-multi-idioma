@@ -1,8 +1,8 @@
 'use client';
 
 import { Sidebar, SidebarHeader } from '@/components/ui/sidebar';
-import { TeamSwitcher } from './team-switch/team-switcher.shared.component';
 import { GalleryVerticalEnd, Ribbon } from 'lucide-react';
+import { TeamSwitcher } from './team-switch/team-switcher.shared.component';
 
 export function AppSidebar() {
 	const organizations = {

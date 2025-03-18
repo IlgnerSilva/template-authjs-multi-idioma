@@ -1,7 +1,7 @@
 'use client';
 
-import * as React from 'react';
 import { Plus } from 'lucide-react';
+import * as React from 'react';
 
 import {
 	DropdownMenu,
@@ -17,8 +17,8 @@ import {
 	SidebarMenuItem,
 	useSidebar,
 } from '@/components/ui/sidebar';
-import { handleTeste } from './action';
 import { useSession } from 'next-auth/react';
+import { handleTeste } from './action';
 export function TeamSwitcher({
 	teams,
 }: {
