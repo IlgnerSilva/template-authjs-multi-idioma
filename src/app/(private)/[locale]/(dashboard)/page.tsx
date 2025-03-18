@@ -10,11 +10,11 @@ import {
 } from '@/components/ui/breadcrumb';
 import { Separator } from '@/components/ui/separator';
 import {
+	Sidebar,
+	SidebarHeader,
 	SidebarInset,
 	SidebarProvider,
 	SidebarTrigger,
-	Sidebar,
-	SidebarHeader,
 } from '@/components/ui/sidebar';
 import { SessionProvider } from 'next-auth/react';
 
