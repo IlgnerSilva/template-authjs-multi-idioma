@@ -15,7 +15,7 @@ export type ErrorResponse = {
 };
 
 // Função para criar o erro
-export function createError(type: ERROR_TYPES): ErrorResponse {
+export function generateError(type: ERROR_TYPES): ErrorResponse {
 	return {
 		error: true,
 		type,
