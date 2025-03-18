@@ -1,9 +1,15 @@
 import { routing } from '@/i18n/routing';
+import type { Metadata } from 'next';
 import { NextIntlClientProvider } from 'next-intl';
 import { getMessages } from 'next-intl/server';
 import { notFound } from 'next/navigation';
 
 type Params = Promise<{ locale: string }>;
+
+export const metadata: Metadata = {
+	title: 'Templete - Login',
+	description: 'Template Multi Idioma',
+};
 
 export default async function LocaleLayout({
 	children,
@@ -12,8 +18,6 @@ export default async function LocaleLayout({
 	const { locale } = await params;
 	// biome-ignore lint/suspicious/noExplicitAny: <explanation>
 	if (!routing.locales.includes(locale as any)) {
-		console.error(routing.locales);
-		console.error(locale);
 		notFound();
 	}
 	const dictionary = await getMessages();

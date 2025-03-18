@@ -6,7 +6,7 @@ export function EmailTemplate(type: 'code' | 'message', data: string) {
 				<p>Seu código de verificação é:</p>
 				<p>{data}</p>
 			</div>
-		)
+		);
 	}
 
 	if (type === 'message') {
@@ -16,6 +16,6 @@ export function EmailTemplate(type: 'code' | 'message', data: string) {
 				<p>Seu link de verificação é:</p>
 				<p>{data}</p>
 			</div>
-		)
+		);
 	}
 }
