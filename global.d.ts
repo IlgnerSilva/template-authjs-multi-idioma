@@ -1,8 +1,4 @@
-import type pt from './dictionary/pt-br.json';
-
-type Messages = typeof pt;
-
-declare global {
-	// Use type safe message keys with `next-intl`
-	interface IntlMessages extends Messages {}
-}
+type GlobalMessages = typeof import('./dictionary/pt-br.json');
+type ZodMessages = typeof import('./dictionary/zod/pt-br.json');
+type Messages = GlobalMessages & ZodMessages;
+declare interface IntlMessages extends Messages {}

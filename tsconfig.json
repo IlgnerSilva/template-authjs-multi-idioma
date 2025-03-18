@@ -23,7 +23,7 @@
 		"paths": {
 			"@/*": ["./src/*"],
 			"@core/*": ["./src/@core/*"],
-			"@application/*": ["./src/@application/*"],
+			"@app/*": ["./src/app/*"],
 			"@drizzle/*": ["./drizzle/*"]
 		}
 	},

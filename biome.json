@@ -6,8 +6,14 @@
 	"linter": {
 		"enabled": true,
 		"rules": {
-			"recommended": true
+			"recommended": true,
+			"nursery": {
+				"useSortedClasses": "off"
+			}
 		}
+	},
+	"files": {
+		"ignore": ["globals.css"]
 	},
 	"formatter": {
 		"enabled": true,
@@ -18,6 +24,9 @@
 		"formatter": {
 			"quoteStyle": "single",
 			"semicolons": "always"
+		},
+		"parser": {
+			"unsafeParameterDecoratorsEnabled": true
 		}
 	}
 }
