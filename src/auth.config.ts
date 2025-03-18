@@ -11,8 +11,4 @@ export default {
 		}),
 		Google,
 	],
-	session: {
-		strategy: 'jwt',
-		maxAge: 60 * 60,
-	},
 } satisfies NextAuthConfig;

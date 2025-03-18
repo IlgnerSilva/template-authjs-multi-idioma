@@ -14,6 +14,9 @@ declare module 'next-auth' {
 			sub: string;
 			user_id: string;
 			provider: string;
+			organizations: [
+				{ user_id: string; org_id: string; role: string; active: boolean },
+			];
 			callbackUrl: string;
 			iat: number;
 			exp: number;
@@ -27,19 +30,17 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
 	pages: {
 		signIn: '/auth/login',
 	},
+	session: {
+		strategy: 'jwt',
+		maxAge: 60 * 60,
+	},
 	callbacks: {
 		signIn: async ({ user, account, profile, credentials }) => {
 			if (credentials) return true;
-
-			return await AutheticateWithProvidersUseCase.execute({
-				name: user.name,
-				email: user.email as string,
-				provider: account?.provider,
-				image: profile?.picture,
-			});
+			return await AutheticateWithProvidersUseCase.execute();
 		},
-		async jwt({ token }) {
-			return token;
+		async jwt({ token, user }) {
+			return { ...token, ...user };
 		},
 		async session({ session, user, token }) {
 			return {
