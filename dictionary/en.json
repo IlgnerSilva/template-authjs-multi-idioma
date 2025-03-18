@@ -2,12 +2,14 @@
 	"Pages": {
 		"Login": {
 			"titleCredentials": "Continue with email and password.",
-			"titleOauth": "Connect using Google or GitHub",
-			"titleOTP": "We just send you a verify code. Check your inbox to get them.",
+			"titleOauth": "Connect using",
+			"titleOTP": "We sent a verification code to your email.",
 			"messages": {
 				"error": {
-					"email": "Invalid email",
-					"password": "Password field is required",
+					"email": "Invalidsss email",
+					"password": {
+						"required": "Fill in the password field"
+					},
 					"credentials": "Invalid username or password"
 				}
 			}
@@ -16,7 +18,7 @@
 	"Components": {
 		"Button": {
 			"login": {
-				"default": "Log in",
+				"default": "Sign in",
 				"google": "Google",
 				"facebook": "Facebook",
 				"github": "GitHub"
@@ -29,14 +31,25 @@
 			},
 			"password": {
 				"label": "Password",
-				"placeholder": "Password..."
+				"placeholder": "Enter your password"
 			}
 		}
 	},
-	"ErrorsType": {
-		"INVALID_EMAIL_OR_PASSWORD": "Invalid email or password",
+	"Validation": {
+		"required": "This field is required",
+		"invalidEmail": "Enter a valid email"
+	},
+	"Errors": {
+		"INVALID_EMAIL_OR_PASSWORD": "Invalid username or password",
 		"INVALID_CODE": "Invalid code",
 		"TWO_FACTOR_REQUIRED": "Verification code required",
 		"USER_NOT_FOUND": "User not found"
+	},
+	"form": {
+		"username": "Username",
+		"age": "Age"
+	},
+	"customErrors": {
+		"admin_username_error": "Nice try!"
 	}
 }

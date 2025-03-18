@@ -6,7 +6,7 @@ export const routing = defineRouting({
 	locales: ['en', 'pt-br'],
 
 	// Idioma padrão
-	defaultLocale: 'en',
+	defaultLocale: 'pt-br',
 
 	// Caminhos para cada idioma
 	pathnames: {
