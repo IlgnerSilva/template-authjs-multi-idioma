@@ -22,8 +22,6 @@
 		],
 		"paths": {
 			"@/*": ["./src/*"],
-			"@core/*": ["./src/@core/*"],
-			"@app/*": ["./src/app/*"],
 			"@drizzle/*": ["./drizzle/*"]
 		}
 	},
