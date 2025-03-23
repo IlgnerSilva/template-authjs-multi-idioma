@@ -1,17 +1,16 @@
 import type {
-	UserOrganizationInput,
-	UserOrganizationOutput,
-} from '@core/dtos/user-organizations';
+	UserOrganization
+} from '@/core/domain/entities/user-organization.entity';
 
 export interface IUserOrganizationRepository {
 	findOrganizationsByUserId: (
 		userId: string,
-	) => Promise<UserOrganizationOutput[]>;
-	addUserToOrganization: (user: UserOrganizationInput) => Promise<void>;
+	) => Promise<UserOrganization[]>;
+	addUserToOrganization: (user: UserOrganization) => Promise<void>;
 	activeOrInactivateUserFromOrganization: ({
 		user_id,
 		org_id,
 		active,
-	}: UserOrganizationInput) => Promise<void>;
-	updateUserRole: (user: UserOrganizationInput) => Promise<void>;
+	}: UserOrganization) => Promise<void>;
+	updateUserRole: (user: UserOrganization) => Promise<void>;
 }

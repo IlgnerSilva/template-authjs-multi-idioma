@@ -29,7 +29,7 @@ export class AuthenticateWithCredentialsUseCase {
 		password,
 		code,
 	}: AuthenticateWithCredentialsUseCaseRequest) {
-		const [user] = await this.usersRepository.findByEmail(email);
+		const [user] = await this.usersRepository.findByEmail(email) ?? [];
 
 		if (!user) throw generateError(ERROR_TYPES.USER_NOT_FOUND);
 
@@ -61,7 +61,7 @@ export class AuthenticateWithCredentialsUseCase {
 					});
 				return generateError(ERROR_TYPES.INVALID_CODE);
 			}
-
+			
 			return generateError(ERROR_TYPES.TWO_FACTOR_REQUIRED);
 		}
 

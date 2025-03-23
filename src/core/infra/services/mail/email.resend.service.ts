@@ -1,5 +1,5 @@
 import { Resend } from "resend"
-import type { IEmailService } "@/core/domain/services/email.service.interface"
+import type { IEmailService } from "@/core/domain/services/email.service.interface"
 
 export class EmailService implements IEmailService{
     private readonly resend: Resend
