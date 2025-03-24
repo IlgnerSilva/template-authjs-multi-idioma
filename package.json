@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev --turbopack",
+    "dev:email": "email dev --dir ./src/components/shared/emails",
     "build": "next build",
     "start": "next start",
     "lint": "next lint"
@@ -22,7 +23,8 @@
     "@radix-ui/react-separator": "^1.1.2",
     "@radix-ui/react-slot": "^1.1.2",
     "@radix-ui/react-tooltip": "^1.1.8",
-    "@tailwindcss/postcss": "^4.0.14",
+    "@react-email/components": "0.0.34",
+    "@tailwindcss/postcss": "^4.0.15",
     "bcrypt": "^5.1.1",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
@@ -49,7 +51,7 @@
     "resend": "^4.1.2",
     "sonner": "^2.0.1",
     "tailwind-merge": "^3.0.2",
-    "tailwindcss": "^4.0.14",
+    "tailwindcss": "^4.0.15",
     "tailwindcss-animate": "^1.0.7",
     "uuid": "^11.1.0",
     "zod": "^3.24.2",
@@ -59,10 +61,11 @@
   "devDependencies": {
     "@biomejs/biome": "1.9.4",
     "@types/bcrypt": "^5.0.2",
-    "@types/node": "^20.17.24",
+    "@types/node": "^20.17.25",
     "@types/react": "19.0.11",
     "@types/react-dom": "19.0.4",
     "drizzle-kit": "^0.27.2",
+    "react-email": "3.0.7",
     "tsx": "^4.19.3",
     "typescript": "^5.8.2"
   },

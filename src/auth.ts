@@ -1,4 +1,4 @@
-import { AutheticateWithProvidersUseCase } from '@core/application/use-cases/user/authenticate-with-providers.use-case';
+import { AutheticateWithProvidersUseCase } from '@/core/application/usecases/user/authenticate-with-providers.use-case';
 import NextAuth, { type DefaultSession } from 'next-auth';
 import authConfig from './auth.config';
 

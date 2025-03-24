@@ -1,10 +1,9 @@
 'use server';
 
-import { signIn } from '@/auth';
+import { getInjection } from '@/core/di/container';
+import { AUTHENTICATION_SYMBOLS } from '@/core/di/symbols/authentication.symbols';
 import { z } from 'zod';
 import { createServerAction } from 'zsa';
-import { getInjection } from '@core/di/container';
-import { AUTHENTICATION_SYMBOLS } from '@core/di/symbols/authentication.symbols';
 
 export const loginCredentialsAuthAction = createServerAction()
 	.input(

@@ -1,7 +1,7 @@
 import 'reflect-metadata';
 
+import { AuthenticationModule } from '@/core/di/modules/authentication.module';
 import { Container } from 'inversify';
-import { AuthenticationModule } from '@core/di/modules/authentication.module';
 
 const ApplicationContainer = new Container({
 	defaultScope: 'Singleton',

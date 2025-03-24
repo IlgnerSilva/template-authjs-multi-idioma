@@ -24,7 +24,7 @@ import {
 	InputOTPGroup,
 	InputOTPSlot,
 } from '@/components/ui/input-otp';
-import { env } from '@/env/client';
+import { env } from '../../../../../../../env/client';
 import { ERROR_TYPES } from '@/lib/errors';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { KeyRound, Mail } from 'lucide-react';
