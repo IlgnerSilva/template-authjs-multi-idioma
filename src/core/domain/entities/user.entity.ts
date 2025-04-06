@@ -13,6 +13,8 @@ const UserSchema = z.object({
   image: z.string().nullable().optional(),
   created_at: z.date().nullable().optional(),
   updated_at: z.date().nullable().optional(),
+  mfa_locked_until: z.date().nullable().optional(),
+  active: z.boolean().default(true),
 });
 
 // Tipo inferido do schema
@@ -30,6 +32,8 @@ export class User {
   readonly image: string | null;
   readonly created_at: Date | null;
   readonly updated_at: Date | null;
+  readonly mfa_locked_until: Date | null;
+  readonly active: boolean;
 
   constructor(props: UserProps) {
     const validatedData = UserSchema.parse(props);
@@ -45,6 +49,8 @@ export class User {
     this.image = validatedData.image || null;
     this.created_at = validatedData.created_at || new Date();
     this.updated_at = validatedData.updated_at || new Date();
+    this.mfa_locked_until = validatedData.mfa_locked_until || null;
+    this.active = validatedData.active;
   }
 
   // Métodos de negócio

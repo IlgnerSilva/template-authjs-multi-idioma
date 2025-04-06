@@ -21,12 +21,33 @@ export class OtpCodesDrizzleRepository implements IOtpCodes {
 			.select()
 			.from(tableOtpCodes)
 			.where(eq(tableOtpCodes.user_id, userId))
-			.orderBy(desc(tableOtpCodes.created_at))
-			.limit(1);
+			.orderBy(desc(tableOtpCodes.created_at));
 
 		return otpCodes.map((otpCodesData) => new OtpCodes(otpCodesData));
 	}
 	async insert(data: OtpCodes): Promise<void> {
 		await db.insert(tableOtpCodes).values(data).execute();
+	}
+
+	async update(data: OtpCodes): Promise<void> {
+		await db
+			.update(tableOtpCodes)
+			.set(data)
+			.where(eq(tableOtpCodes.otp_code_id, data.otp_code_id))
+			.execute();
+	}
+
+	async deleteById (id: string): Promise<void> {
+		await db
+			.delete(tableOtpCodes)
+			.where(eq(tableOtpCodes.otp_code_id, id))
+			.execute();
+	}
+
+	async deleteAllByUserId(userId: string): Promise<void> {
+		await db
+			.delete(tableOtpCodes)
+			.where(eq(tableOtpCodes.user_id, userId))
+			.execute();
 	}
 }

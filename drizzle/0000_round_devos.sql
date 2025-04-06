@@ -1,3 +1,14 @@
+CREATE TABLE IF NOT EXISTS "otp_codes" (
+	"otp_code_id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
+	"user_id" uuid NOT NULL,
+	"code" varchar(6) NOT NULL,
+	"expires_at" timestamp NOT NULL,
+	"created_at" timestamp DEFAULT now() NOT NULL,
+	"resend_attempts" integer DEFAULT 0 NOT NULL,
+	"failed_attempts" integer DEFAULT 0 NOT NULL,
+	"is_used" boolean DEFAULT false NOT NULL
+);
+--> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "organization_plans" (
 	"org_id" uuid NOT NULL,
 	"plan_id" uuid NOT NULL,
@@ -53,6 +64,8 @@ CREATE TABLE IF NOT EXISTS "users" (
 	"created_at" timestamp DEFAULT now(),
 	"updated_at" timestamp,
 	"image" varchar(255),
+	"mfa_locked_until" timestamp,
+	"active" boolean DEFAULT true,
 	CONSTRAINT "users_email_unique" UNIQUE("email")
 );
 --> statement-breakpoint
@@ -62,6 +75,12 @@ CREATE TABLE IF NOT EXISTS "user_organizations" (
 	"role" varchar(50) NOT NULL,
 	"active" boolean DEFAULT true NOT NULL
 );
+--> statement-breakpoint
+DO $$ BEGIN
+ ALTER TABLE "otp_codes" ADD CONSTRAINT "otp_codes_user_id_users_user_id_fk" FOREIGN KEY ("user_id") REFERENCES "public"."users"("user_id") ON DELETE cascade ON UPDATE no action;
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;
 --> statement-breakpoint
 DO $$ BEGIN
  ALTER TABLE "organization_plans" ADD CONSTRAINT "organization_plans_org_id_organizations_org_id_fk" FOREIGN KEY ("org_id") REFERENCES "public"."organizations"("org_id") ON DELETE cascade ON UPDATE no action;

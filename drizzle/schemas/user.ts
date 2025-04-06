@@ -28,8 +28,9 @@ export const tableUsers = pgTable('users', {
 	created_at: timestamp('created_at').defaultNow(),
 	updated_at: timestamp('updated_at').$onUpdate(() => new Date()),
 	image: varchar('image', { length: 255 }),
+	mfa_locked_until: timestamp('mfa_locked_until'),
+	active: boolean('active').default(true).notNull(),
 });
 
 export type User = typeof tableUsers.$inferSelect;
 export type UsersCreateInput = OptionalFields<typeof tableUsers.$inferInsert>;
-//export const insertUserSchema = createInsertSchema(tableUsers);

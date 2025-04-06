@@ -11,12 +11,12 @@ import { injectable } from 'inversify';
 export class UsersDrizzleRepository implements IUserRepository {
 	async findByEmail(email: string) {
 		const user = await db
-			.select()
-			.from(tableUsers)
-			.where(eq(tableUsers.email, email))
-			.limit(1);
+		.select()
+		.from(tableUsers)
+		.where(eq(tableUsers.email, email))
+		.limit(1);
 		
-			return user.map(userData => new User(userData))
+		return user.map(userData => new User(userData))
 	}
 
 	async findById(id: string) {
