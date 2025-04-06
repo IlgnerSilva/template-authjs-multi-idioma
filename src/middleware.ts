@@ -1,9 +1,11 @@
-import { privateRoutes, publicRoutes } from '@/routes';
 import NextAuth from 'next-auth';
 import createMiddleware from 'next-intl/middleware';
 import { type NextRequest, NextResponse } from 'next/server';
 import authConfig from './auth.config';
 import { locales, routing } from './i18n/routing';
+
+const publicRoutes = ['/auth/login', 'dashboard'];
+const privateRoutes = ['/'];
 
 // Configuração do NextAuth com base no arquivo de configuração auth.config
 const { auth } = NextAuth(authConfig);
@@ -52,7 +54,7 @@ const middleware = (req: NextRequest) => {
 
 // Configuração de correspondência para os caminhos que o middleware deve interceptar
 export const config = {
-	matcher: ['/((?!api|_next|_vercel|.*\\..*).*)'],
+	matcher: ['/((?!api|doc|rpc|spec|_next|_vercel|.*\\..*).*)'],
 };
 
 export default middleware;

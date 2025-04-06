@@ -8,8 +8,8 @@ import type { IUserOrganizationRepository } from '@/core/domain/repositories/use
 import type { IUserRepository } from '@/core/domain/repositories/user.repository.interface';
 import type { IEmailService } from '@/core/domain/services/email.service.interface';
 import type { IPassword } from '@/core/domain/services/password.interface';
-import { ERROR_TYPES, generateError } from '@/lib/errors';
-import { generateOTP } from '@/lib/utils';
+import { ERROR_CODE, generateError } from '@/lib/errors';
+import { generateOTP } from '@/utils';
 import { inject, injectable } from 'inversify';
 
 interface AuthenticateWithCredentialsUseCaseRequest {
@@ -44,16 +44,22 @@ export class AuthenticateWithCredentialsUseCase {
 	}: AuthenticateWithCredentialsUseCaseRequest) {
 		// Encontrar usuário
 		const [user] = (await this.usersRepository.findByEmail(email)) ?? [];
-		console.log(!user);
-		if (!user) throw generateError(ERROR_TYPES.USER_NOT_FOUND);
-		
+
+		if (!user) throw generateError(ERROR_CODE.USER_NOT_FOUND);
+
 		// Verificar senha
-		if (!user.password_hash || !(await this.passwordHasher.comparePasswords(password, user.password_hash)))
-			return generateError(ERROR_TYPES.INVALID_EMAIL_OR_PASSWORD);
+		if (
+			!user.password_hash ||
+			!(await this.passwordHasher.comparePasswords(
+				password,
+				user.password_hash,
+			))
+		)
+			return generateError(ERROR_CODE.INVALID_EMAIL_OR_PASSWORD);
 
 		//Verifica se o usuário está bloqueado
-		if(user.mfa_locked_until && new Date() < user.mfa_locked_until)
-			return generateError(ERROR_TYPES.MFA_LOCKED)
+		if (user.mfa_locked_until && new Date() < user.mfa_locked_until)
+			return generateError(ERROR_CODE.MFA_LOCKED);
 
 		// Buscar organizações do usuário
 		const userOrganizations =
@@ -62,7 +68,7 @@ export class AuthenticateWithCredentialsUseCase {
 			);
 
 		// Se mfa estiver desativado, loga direto
-		if(!user.two_factor_authentication){
+		if (!user.two_factor_authentication) {
 			return await signIn('credentials', {
 				user_id: user.user_id,
 				name: user.name,
@@ -75,18 +81,18 @@ export class AuthenticateWithCredentialsUseCase {
 		}
 
 		// Se usuário não tiver enviado otp na autenticação
-		if(!code){
-			const otpCode = generateOTP(6)
-    		const otpHash = await this.passwordHasher.hashPassword(otpCode)
-    		const expiresAt = new Date(Date.now() + 5 * 60000); 
+		if (!code) {
+			const otpCode = generateOTP(6);
+			const otpHash = await this.passwordHasher.hashPassword(otpCode);
+			const expiresAt = new Date(Date.now() + 5 * 60000);
 
 			const otp = new OtpCodes({
 				user_id: user.user_id,
 				code_hash: otpHash,
-				expires_at: expiresAt
-			})
+				expires_at: expiresAt,
+			});
 
-			await this.otpCodesRepository.insert(otp)
+			await this.otpCodesRepository.insert(otp);
 
 			// Enviar e-mail com código OTP
 			await this.emailService.sendEmail({
@@ -94,12 +100,12 @@ export class AuthenticateWithCredentialsUseCase {
 				subject: 'Código de Autenticação',
 				react: MFACode({ code: otpCode }),
 			});
-			
-			return generateError(ERROR_TYPES.TWO_FACTOR_REQUIRED);
+
+			return generateError(ERROR_CODE.TWO_FACTOR_REQUIRED);
 		}
 
-		await this.verifyOTP(user, code)
-		
+		await this.verifyOTP(user, code);
+
 		return await signIn('credentials', {
 			user_id: user.user_id,
 			name: user.name,
@@ -108,19 +114,23 @@ export class AuthenticateWithCredentialsUseCase {
 			picture: user.image,
 			organizations:
 				userOrganizations.length > 0 ? userOrganizations : undefined,
-		})
+		});
 	}
-	private async verifyOTP(user: User, otpCode: string){
-		const [otp] = (await this.otpCodesRepository.findOtpByUserId(user.user_id)) ?? []
+	private async verifyOTP(user: User, otpCode: string) {
+		const [otp] =
+			(await this.otpCodesRepository.findOtpByUserId(user.user_id)) ?? [];
 
-		if(!otp || await this.passwordHasher.comparePasswords(otpCode, otp.code_hash))
-			return generateError(ERROR_TYPES.INVALID_CODE)
+		if (
+			!otp ||
+			(await this.passwordHasher.comparePasswords(otpCode, otp.code_hash))
+		)
+			return generateError(ERROR_CODE.INVALID_CODE);
 
 		const otpInstance = new OtpCodes({
 			user_id: otp.user_id,
 			code_hash: otp.code_hash,
 			is_used: true,
-		})
-		await this.otpCodesRepository.update(otpInstance)
+		});
+		await this.otpCodesRepository.update(otpInstance);
 	}
 }

@@ -1,5 +1,4 @@
 import { type ClassValue, clsx } from 'clsx';
-import type { SessionOptions } from 'iron-session';
 import { twMerge } from 'tailwind-merge';
 
 export function cn(...inputs: ClassValue[]) {
@@ -15,16 +14,4 @@ export function generateOTP(numberOfDigits: number) {
 	}
 
 	return OTP;
-}
-
-export function createSessionOptions(cookieName: string): SessionOptions {
-	return {
-		password:
-			'minha_senha_segurasafjasgvfdjhvshjdvfjhdsvfhjsdvfvhjsavdjhsavdhjsa',
-		cookieName: cookieName,
-		cookieOptions: {
-			httpOnly: true,
-			secure: true,
-		},
-	};
 }

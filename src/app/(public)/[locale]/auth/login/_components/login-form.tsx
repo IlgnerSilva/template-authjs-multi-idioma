@@ -1,5 +1,6 @@
 'use client';
 
+import { loginCredentialsAuthAction } from '@/actions/auth/login-credentials.auth.action';
 import { Button } from '@/components/shared/button';
 import { Input, InputGroup } from '@/components/shared/input';
 import { SwitcherLocale } from '@/components/shared/switcher-locale';
@@ -24,38 +25,32 @@ import {
 	InputOTPGroup,
 	InputOTPSlot,
 } from '@/components/ui/input-otp';
-import { env } from '../../../../../../../env/client';
-import { ERROR_TYPES } from '@/lib/errors';
+import { useErrorHandler } from '@/lib/errors';
+import { useI18nZodErrors } from '@/lib/useI18nZodErrors';
+import { CredentialSchema } from '@/schemas/auth';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useServerAction } from '@orpc/react/hooks';
 import { KeyRound, Mail } from 'lucide-react';
-import { AnimatePresence, motion } from 'motion/react';
 import { useTranslations } from 'next-intl';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { z } from 'zod';
-import { useServerAction } from 'zsa-react';
-import { loginCredentialsAuthAction } from '@/actions/auth/login-credentials.auth.action';
+import { Toaster, toast } from 'sonner';
+import type { z } from 'zod';
+import { env } from '../../../../../../../env/client';
 import { AuthProviders } from './providers';
-import { toast, Toaster } from 'sonner';
-import { useI18nZodErrors } from '@/lib/useI18nZodErrors';
 
 export function LoginForm() {
 	const [showOTP, setShowOTP] = useState(false);
 	const [erro, setErro] = useState<string | null>(null);
 	const p = useTranslations('Pages');
 	const c = useTranslations('Components');
-	const erros = useTranslations('Errors');
+
+	const { handleApiError } = useErrorHandler();
 	const { isPending, execute } = useServerAction(loginCredentialsAuthAction);
 
 	useI18nZodErrors();
-	const CredentialsSchema = z.object({
-		email: z.string().email(),
-		password: z.string(),
-		code: z.optional(z.string()),
-	});
-
-	const form = useForm<z.infer<typeof CredentialsSchema>>({
-		resolver: zodResolver(CredentialsSchema),
+	const form = useForm<z.infer<typeof CredentialSchema>>({
+		resolver: zodResolver(CredentialSchema),
 		defaultValues: {
 			email: 'sentinex.developer@gmail.com',
 			password: '12345678',
@@ -63,24 +58,12 @@ export function LoginForm() {
 		},
 	});
 
-	async function onSubmit(values: z.infer<typeof CredentialsSchema>) {
-		const [data, err] = await execute(values);
-		if (data?.type !== ERROR_TYPES.TWO_FACTOR_REQUIRED) {
-			switch (data?.type) {
-				case ERROR_TYPES.INVALID_EMAIL_OR_PASSWORD:
-					toast.error(erros('INVALID_EMAIL_OR_PASSWORD'));
-					break;
-				case ERROR_TYPES.INVALID_CODE:
-					toast.error(erros('INVALID_CODE'));
-					break;
-				case ERROR_TYPES.USER_NOT_FOUND:
-					toast.error(erros('USER_NOT_FOUND'));
-					break;
-			}
-			return;
+	async function onSubmit(values: z.infer<typeof CredentialSchema>) {
+		const { data } = await execute(values);
+
+		if (data) {
+			handleApiError(data);
 		}
-		setShowOTP(true);
-		setErro(null);
 	}
 
 	return (
@@ -176,50 +159,36 @@ export function LoginForm() {
 									</div>
 								)}
 								{showOTP && (
-									<AnimatePresence>
-										<motion.div
-											key="otp"
-											initial={{ opacity: 0, scale: 0 }}
-											animate={{ opacity: 1, scale: 1 }}
-											transition={{
-												duration: 0.4,
-												scale: {
-													type: 'spring',
-													visualDuration: 0.4,
-													bounce: 0.5,
-												},
-											}}
-										>
-											<FormField
-												control={form.control}
-												name="code"
-												render={({ field }) => (
-													<FormItem>
-														<FormLabel>{p('Login.titleOTP')}</FormLabel>
-														<FormControl className="justify-center">
-															<InputOTP
-																className="justify-center"
-																maxLength={6}
-																{...field}
-															>
-																<InputOTPGroup>
-																	<InputOTPSlot index={0} />
-																	<InputOTPSlot index={1} />
-																	<InputOTPSlot index={2} />
-																</InputOTPGroup>
-																<InputOTPGroup>
-																	<InputOTPSlot index={3} />
-																	<InputOTPSlot index={4} />
-																	<InputOTPSlot index={5} />
-																</InputOTPGroup>
-															</InputOTP>
-														</FormControl>
-														<FormMessage />
-													</FormItem>
-												)}
-											/>
-										</motion.div>
-									</AnimatePresence>
+									<div>
+										<FormField
+											control={form.control}
+											name="code"
+											render={({ field }) => (
+												<FormItem>
+													<FormLabel>{p('Login.titleOTP')}</FormLabel>
+													<FormControl className="justify-center">
+														<InputOTP
+															className="justify-center"
+															maxLength={6}
+															{...field}
+														>
+															<InputOTPGroup>
+																<InputOTPSlot index={0} />
+																<InputOTPSlot index={1} />
+																<InputOTPSlot index={2} />
+															</InputOTPGroup>
+															<InputOTPGroup>
+																<InputOTPSlot index={3} />
+																<InputOTPSlot index={4} />
+																<InputOTPSlot index={5} />
+															</InputOTPGroup>
+														</InputOTP>
+													</FormControl>
+													<FormMessage />
+												</FormItem>
+											)}
+										/>
+									</div>
 								)}
 								{erro && (
 									<FormDescription>
