@@ -1,6 +1,6 @@
 import { OtpCodes } from '@/core/domain/entities/otp-codes.entity';
 import type { IOtpCodes } from '@/core/domain/repositories/otp.repository.interface';
-import { db } from '@drizzle/index';
+import { db } from '@/db/index';
 import { tableOtpCodes } from '@drizzle/schemas/otp_codes';
 import { desc, eq } from 'drizzle-orm';
 import { injectable } from 'inversify';

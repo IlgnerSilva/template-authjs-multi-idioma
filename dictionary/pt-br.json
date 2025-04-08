@@ -45,6 +45,9 @@
 		"TWO_FACTOR_REQUIRED": "Código de verificação requerido",
 		"USER_NOT_FOUND": "Usuário não encontrado"
 	},
+	"Success": {
+		"LOGIN_SUCCESS": ""
+	},
 	"form": {
 		"username": "Username",
 		"age": "Age"

@@ -25,7 +25,7 @@ import {
 	InputOTPGroup,
 	InputOTPSlot,
 } from '@/components/ui/input-otp';
-import { useErrorHandler } from '@/lib/errors';
+import { useResponseHandler } from '@/lib/api-response';
 import { useI18nZodErrors } from '@/lib/useI18nZodErrors';
 import { CredentialSchema } from '@/schemas/auth';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -45,7 +45,7 @@ export function LoginForm() {
 	const p = useTranslations('Pages');
 	const c = useTranslations('Components');
 
-	const { handleApiError } = useErrorHandler();
+	const { handleApiResponse } = useResponseHandler();
 	const { isPending, execute } = useServerAction(loginCredentialsAuthAction);
 
 	useI18nZodErrors();
@@ -62,7 +62,7 @@ export function LoginForm() {
 		const { data } = await execute(values);
 
 		if (data) {
-			handleApiError(data);
+			handleApiResponse(data);
 		}
 	}
 

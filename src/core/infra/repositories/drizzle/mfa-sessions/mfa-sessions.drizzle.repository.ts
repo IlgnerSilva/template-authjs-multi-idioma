@@ -1,6 +1,6 @@
 import { MfaSession } from '@/core/domain/entities/mfa-sessions.entity';
 import type { IMfaSessions } from '@/core/domain/repositories/mfa-sessions.interface';
-import { db } from '@drizzle/index';
+import { db } from '@/db/index';
 import { tableMfaSessions } from '@drizzle/schemas/mfa_sessions';
 import { desc, eq } from 'drizzle-orm';
 import { injectable } from 'inversify';

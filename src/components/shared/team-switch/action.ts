@@ -1,6 +1,6 @@
 'use server';
 
-import { auth } from '@/auth';
+import { auth } from '@/_auth';
 import { cookies } from 'next/headers';
 
 export const handleTeste = async () => {

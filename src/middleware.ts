@@ -1,14 +1,16 @@
-import NextAuth from 'next-auth';
+// import NextAuth from 'next-auth';
 import createMiddleware from 'next-intl/middleware';
 import { type NextRequest, NextResponse } from 'next/server';
-import authConfig from './auth.config';
+// import authConfig from './auth.config';
 import { locales, routing } from './i18n/routing';
+import { auth } from './lib/auth';
+import { headers } from 'next/headers';
 
 const publicRoutes = ['/auth/login', 'dashboard'];
 const privateRoutes = ['/'];
 
 // Configuração do NextAuth com base no arquivo de configuração auth.config
-const { auth } = NextAuth(authConfig);
+// const { auth } = NextAuth(authConfig);
 
 // Middleware responsável pela internacionalização das rotas
 const intlMiddleware = createMiddleware(routing);
@@ -23,10 +25,15 @@ const testPathnameRegex = (pages: string[], pathName: string): boolean => {
 };
 
 // Middleware de autenticação usando NextAuth
-const authMiddleware = auth((req) => {
+const authMiddleware = async (req: NextRequest) => {
 	const isPublicPage = testPathnameRegex(publicRoutes, req.nextUrl.pathname);
 	const isProtectPage = testPathnameRegex(privateRoutes, req.nextUrl.pathname);
-	const isLogged = !!req.auth;
+
+	const session = await auth.api.getSession({
+        headers: await headers()
+    })
+
+	const isLogged = !!session;
 
 	// Se o usuário não estiver autenticado e tentar acessar uma página que requer autenticação, redireciona para a página de login
 	if (!isLogged && isProtectPage) {
@@ -44,7 +51,7 @@ const authMiddleware = auth((req) => {
 
 	// Se não for uma página de autenticação, continua o processo de internacionalização
 	return intlMiddleware(req);
-});
+};
 
 // Função principal do middleware que combina a autenticação e a internacionalização
 const middleware = (req: NextRequest) => {
@@ -55,6 +62,7 @@ const middleware = (req: NextRequest) => {
 // Configuração de correspondência para os caminhos que o middleware deve interceptar
 export const config = {
 	matcher: ['/((?!api|doc|rpc|spec|_next|_vercel|.*\\..*).*)'],
+	runtime: 'nodejs'
 };
 
 export default middleware;

@@ -3,7 +3,7 @@ import type {
 	UserOrganizationOutput,
 } from '@/core/dtos/user-organizations';
 import type { IUserOrganizationRepository } from '@/core/domain/repositories/user-organization.interface';
-import { db } from '@drizzle/index';
+import { db } from '@/db/index';
 import { tableOrganizations } from '@drizzle/schemas/organizations';
 import { tableUserOrganizations } from '@drizzle/schemas/user_organizations';
 import { and, eq } from 'drizzle-orm';

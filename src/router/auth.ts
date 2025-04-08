@@ -1,6 +1,6 @@
 import { getInjection } from '@/core/di/container';
 import { AUTHENTICATION_SYMBOLS } from '@/core/di/symbols/authentication.symbols';
-import type { ErrorResponse } from '@/lib/errors';
+import type { ErrorResponse } from '@/lib/api-response';
 import { CredentialSchema } from '@/schemas/auth';
 import { os } from '@orpc/server';
 

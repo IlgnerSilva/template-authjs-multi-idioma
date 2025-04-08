@@ -1,4 +1,4 @@
-import { signIn } from '@/auth';
+import { signIn } from '@/_auth';
 import { MFACode } from '@/components/shared/emails/templates/mfaCode';
 import { AUTHENTICATION_SYMBOLS } from '@/core/di/symbols/authentication.symbols';
 import { OtpCodes } from '@/core/domain/entities/otp-codes.entity';
@@ -8,7 +8,7 @@ import type { IUserOrganizationRepository } from '@/core/domain/repositories/use
 import type { IUserRepository } from '@/core/domain/repositories/user.repository.interface';
 import type { IEmailService } from '@/core/domain/services/email.service.interface';
 import type { IPassword } from '@/core/domain/services/password.interface';
-import { ERROR_CODE, generateError } from '@/lib/errors';
+import { ERROR_CODE, generateError } from '@/lib/api-response';
 import { generateOTP } from '@/utils';
 import { inject, injectable } from 'inversify';
 

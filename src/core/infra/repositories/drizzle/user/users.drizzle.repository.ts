@@ -2,7 +2,7 @@ import type { IUserRepository } from '@/core/domain/repositories/user.repository
 import {
 	User
 } from '@/core/domain/entities/user.entity';
-import { db } from '@drizzle/index';
+import { db } from '@/db/index';
 import { tableUsers } from '@drizzle/schemas/user';
 import { eq } from 'drizzle-orm';
 import { injectable } from 'inversify';
