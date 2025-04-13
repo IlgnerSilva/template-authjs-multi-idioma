@@ -9,7 +9,7 @@ const rpcLink = new RPCLink({
 		'/rpc',
 		typeof window !== 'undefined'
 			? window.location.href
-			: 'http://localhost:3000',
+			: 'https://3000-idx-template-authjs-multi-idiomagit-1742833803590.cluster-ve345ymguzcd6qqzuko2qbxtfe.cloudworkstations.dev/',
 	),
 	headers: () => ({
 		Authorization: 'Bearer default-token',

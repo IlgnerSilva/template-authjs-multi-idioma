@@ -37,9 +37,10 @@ import { useForm } from 'react-hook-form';
 import { Toaster, toast } from 'sonner';
 import type { z } from 'zod';
 import { env } from '../../../../../../../env/client';
-import { AuthProviders } from './providers';
-
+import { useRouter } from 'next/navigation';
+import { orpcClient } from "@/lib/orpc"
 export function LoginForm() {
+	const route = useRouter();
 	const [showOTP, setShowOTP] = useState(false);
 	const [erro, setErro] = useState<string | null>(null);
 	const p = useTranslations('Pages');
@@ -52,18 +53,27 @@ export function LoginForm() {
 	const form = useForm<z.infer<typeof CredentialSchema>>({
 		resolver: zodResolver(CredentialSchema),
 		defaultValues: {
-			email: 'sentinex.developer@gmail.com',
+			email: 'ilgnersilva@outlook.com',
 			password: '12345678',
 			code: '',
 		},
 	});
 
 	async function onSubmit(values: z.infer<typeof CredentialSchema>) {
-		const { data } = await execute(values);
+		const { email, password } = values;
+		const response = await orpcClient.auth.signin({
+			email,
+			password
+		})
+		console.log(response)
 
-		if (data) {
-			handleApiResponse(data);
-		}
+		//const {data, error} = await execute(values);
+		//console.log(data)
+
+		// if (data?.data)
+		// 	route.push(data.data.url ?? '/')
+
+		//handleApiResponse(error?.message)
 	}
 
 	return (
@@ -85,12 +95,12 @@ export function LoginForm() {
 												{!showOTP && p('Login.titleOauth')}
 											</span>
 											<div className="flex gap-2">
-												<AuthProviders
+												{/* <AuthProviders
 													textOverrides={{
 														google: `${c('Button.login.google')} `,
 														github: `${c('Button.login.github')} `,
 													}}
-												/>
+												/> */}
 											</div>
 										</div>
 									</CardDescription>

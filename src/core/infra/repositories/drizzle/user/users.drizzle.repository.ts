@@ -3,7 +3,7 @@ import {
 	User
 } from '@/core/domain/entities/user.entity';
 import { db } from '@/db/index';
-import { tableUsers } from '@drizzle/schemas/user';
+import { user as tableUsers } from '@/db/schemas';
 import { eq } from 'drizzle-orm';
 import { injectable } from 'inversify';
 
@@ -23,20 +23,9 @@ export class UsersDrizzleRepository implements IUserRepository {
 		const user = await db
 		.select()
 		.from(tableUsers)
-		.where(eq(tableUsers.user_id, id))
+		.where(eq(tableUsers.id, id))
 		.limit(1);
 
 		return user.map(userData => new User(userData))
-	}
-
-	async insertUser(user: User) {
-		await db.insert(tableUsers).values(user);
-	}
-
-	async updateUser(user: User) {
-		await db
-			.update(tableUsers)
-			.set(user)
-			.where(eq(tableUsers.email, user.email));
 	}
 }

@@ -1,4 +1,4 @@
-import { signin } from './auth';
+import { signin } from './auth/signin';
 
 export const router = {
 	auth: {

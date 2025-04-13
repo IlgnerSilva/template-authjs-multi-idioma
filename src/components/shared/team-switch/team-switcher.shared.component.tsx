@@ -19,7 +19,7 @@ import {
 } from '@/components/ui/sidebar';
 import { useSession } from 'next-auth/react';
 import { MFACode } from '../emails/templates/mfaCode';
-import { handleTeste } from './action';
+
 
 export function TeamSwitcher({
 	teams,
@@ -61,7 +61,6 @@ export function TeamSwitcher({
 							<DropdownMenuItem
 								key={team.name}
 								onClick={async () => {
-									await handleTeste();
 									setActiveTeam(team);
 								}}
 								className="gap-2 p-2"

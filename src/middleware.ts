@@ -3,7 +3,7 @@ import createMiddleware from 'next-intl/middleware';
 import { type NextRequest, NextResponse } from 'next/server';
 // import authConfig from './auth.config';
 import { locales, routing } from './i18n/routing';
-import { auth } from './lib/auth';
+import { auth } from '@/lib/auth';
 import { headers } from 'next/headers';
 
 const publicRoutes = ['/auth/login', 'dashboard'];
@@ -61,8 +61,8 @@ const middleware = (req: NextRequest) => {
 
 // Configuração de correspondência para os caminhos que o middleware deve interceptar
 export const config = {
-	matcher: ['/((?!api|doc|rpc|spec|_next|_vercel|.*\\..*).*)'],
-	runtime: 'nodejs'
+	runtime: "nodejs", 
+	matcher: ['/((?!api|doc|rpc|spec|_next|_vercel|.*\\..*).*)']
 };
 
 export default middleware;
