@@ -17,7 +17,6 @@ import {
 	SidebarMenuItem,
 	useSidebar,
 } from '@/components/ui/sidebar';
-import { useSession } from 'next-auth/react';
 import { MFACodeTemplate } from '@/components/shared/emails/mfaCode.template';
 
 
@@ -32,8 +31,6 @@ export function TeamSwitcher({
 }) {
 	const { isMobile } = useSidebar();
 	const [activeTeam, setActiveTeam] = React.useState(teams[0]);
-	const { data: session } = useSession();
-	console.log(session);
 	return (
 		<SidebarMenu>
 			<SidebarMenuItem>
@@ -49,7 +46,7 @@ export function TeamSwitcher({
 						</SidebarMenuButton>
 					</DropdownMenuTrigger>
 					<DropdownMenuContent
-						className="w-(--radix-dropdown-menu-trigger-width) min-w-56 rounded-lg"
+						className="w-(--radix-dropdown-menu-trigger-width) min-w-56 rounded-lg bg-neutral-base-100"
 						align="start"
 						side={isMobile ? 'bottom' : 'right'}
 						sideOffset={4}

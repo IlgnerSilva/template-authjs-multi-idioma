@@ -1,5 +1,4 @@
 import { AppSidebar } from '@/components/shared/app-sidebar';
-import { TeamSwitcher } from '@/components/shared/team-switcher.shared.component';
 import {
 	Breadcrumb,
 	BreadcrumbItem,
@@ -10,17 +9,14 @@ import {
 } from '@/components/ui/breadcrumb';
 import { Separator } from '@/components/ui/separator';
 import {
-	Sidebar,
-	SidebarHeader,
 	SidebarInset,
 	SidebarProvider,
 	SidebarTrigger,
 } from '@/components/ui/sidebar';
-import { SessionProvider } from 'next-auth/react';
 
 export default function Page() {
 	return (
-		<SessionProvider>
+		
 			<SidebarProvider>
 				<AppSidebar />
 				<SidebarInset>
@@ -53,6 +49,6 @@ export default function Page() {
 					</div>
 				</SidebarInset>
 			</SidebarProvider>
-		</SessionProvider>
+		
 	);
 }
