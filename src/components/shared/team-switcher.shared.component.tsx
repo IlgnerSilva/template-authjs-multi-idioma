@@ -18,7 +18,7 @@ import {
 	useSidebar,
 } from '@/components/ui/sidebar';
 import { useSession } from 'next-auth/react';
-import { MFACode } from '../emails/templates/mfaCode';
+import { MFACodeTemplate } from '@/components/shared/emails/mfaCode.template';
 
 
 export function TeamSwitcher({

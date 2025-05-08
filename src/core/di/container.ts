@@ -1,6 +1,6 @@
 import 'reflect-metadata';
 
-import { AuthenticationModule } from '@/core/di/modules/authentication.module';
+import { SigninEmailAndPasswordModule } from '@/core/di/modules/auth/signinEmailAndPassword.module';
 import { Container } from 'inversify';
 
 const ApplicationContainer = new Container({
@@ -8,7 +8,7 @@ const ApplicationContainer = new Container({
 });
 
 export const initializeContainer = () => {
-	ApplicationContainer.load(AuthenticationModule);
+	ApplicationContainer.load(SigninEmailAndPasswordModule);
 };
 
 export const destroyContainer = () => {

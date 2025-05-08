@@ -2,7 +2,7 @@
 
 import { Sidebar, SidebarHeader } from '@/components/ui/sidebar';
 import { GalleryVerticalEnd, Ribbon } from 'lucide-react';
-import { TeamSwitcher } from './team-switch/team-switcher.shared.component';
+import { TeamSwitcher } from './team-switcher.shared.component';
 
 export function AppSidebar() {
 	const organizations = {

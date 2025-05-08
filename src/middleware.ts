@@ -6,7 +6,7 @@ import { locales, routing } from './i18n/routing';
 import { auth } from '@/lib/auth';
 import { headers } from 'next/headers';
 
-const publicRoutes = ['/auth/login', 'dashboard'];
+const publicRoutes = ['/auth/login', '/auth/verify/totp'];
 const privateRoutes = ['/'];
 
 // Configuração do NextAuth com base no arquivo de configuração auth.config
@@ -32,7 +32,6 @@ const authMiddleware = async (req: NextRequest) => {
 	const session = await auth.api.getSession({
         headers: await headers()
     })
-
 	const isLogged = !!session;
 
 	// Se o usuário não estiver autenticado e tentar acessar uma página que requer autenticação, redireciona para a página de login

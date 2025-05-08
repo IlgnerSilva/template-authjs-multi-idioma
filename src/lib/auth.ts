@@ -13,7 +13,6 @@ import {
 import { nextCookies } from "better-auth/next-js";
 import { betterAuth } from "better-auth";
 import { resend } from "@/lib/resend"
-
 export const auth = betterAuth({
     database: drizzleAdapter(db, {
         provider: "pg",
@@ -24,9 +23,11 @@ export const auth = betterAuth({
     trustedOrigins: ["http://localhost:3000", "https://3000-idx-template-authjs-multi-idiomagit-1742833803590.cluster-ve345ymguzcd6qqzuko2qbxtfe.cloudworkstations.dev"],
     appName: "template-authjs-multi-idioma",
     advanced: {
-      generateId: () => {
-        return crypto.randomUUID();
-      },  
+        database:{
+            generateId: () => {
+              return crypto.randomUUID();
+            }, 
+      } 
     },
     emailAndPassword: {
         enabled: true,
@@ -74,7 +75,10 @@ export const auth = betterAuth({
                 })
             },
         }),
-        twoFactor(),
+        twoFactor({
+            issuer: "better-auth.two_factor",
+            skipVerificationOnEnable: true,
+        }),
         nextCookies(),
     ],
 });

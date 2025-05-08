@@ -1,5 +1,5 @@
 import { AppSidebar } from '@/components/shared/app-sidebar';
-import { TeamSwitcher } from '@/components/shared/team-switch/team-switcher.shared.component';
+import { TeamSwitcher } from '@/components/shared/team-switcher.shared.component';
 import {
 	Breadcrumb,
 	BreadcrumbItem,

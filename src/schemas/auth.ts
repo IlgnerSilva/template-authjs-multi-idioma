@@ -3,7 +3,10 @@ import { z } from 'zod';
 export const CredentialSchema = z.object({
 	email: z.string().email(),
 	password: z.string(),
-	code: z.optional(z.string()),
+});
+
+export const TotpSchema = z.object({
+	code: z.string().min(6).max(6),
 });
 
 export const TokenSchema = z.object({

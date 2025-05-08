@@ -1,9 +1,7 @@
-import { generateError, ERROR_CODE, generateSuccess, SUCCESS_CODE } from '@/lib/api-response';
-import { auth } from '@/lib/auth';
-import { APIError } from "better-auth/api"
 import { CredentialSchema } from '@/schemas/auth';
-import { ORPCError, os } from '@orpc/server';
-
+import { ORPCError, os,  } from '@orpc/server';
+import { getInjection } from '@/core/di/container';
+import { AUTHENTICATION_SYMBOLS } from '@/core/di/symbols/authentication.symbols';
 
 export const signin = os
 	.route({
@@ -14,19 +12,16 @@ export const signin = os
 	})
 	.input(CredentialSchema)
 	.handler(async ({ input }) => {
-		try{
-			const response = await auth.api.signInEmail({
-				body:{
-					email: input.email,
-					password: input.password,
-					callbackURL: '/'
-				},
-			})
-			return response
-		}catch(err){
-			if(err instanceof APIError){
-				return generateError(ERROR_CODE.INVALID_EMAIL_OR_PASSWORD, {message: err.message, details: err})
-			}
+		try {
+			return await getInjection(
+				AUTHENTICATION_SYMBOLS.SigninEmailAndPasswordUseCase,
+			).execute(input);
+			// biome-ignore lint/suspicious/noExplicitAny: <explanation>
+		} catch (err: any) {
+			return new ORPCError(err.status, {
+				data: err.body,
+				message: err.message,
+				status: err.statusCode,
+			});
 		}
-	})
-	.actionable();
+	}).actionable()

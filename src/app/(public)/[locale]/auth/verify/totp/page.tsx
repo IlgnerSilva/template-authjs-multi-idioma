@@ -4,7 +4,7 @@ import {
 	CardHeader,
 	CardTitle,
 } from '@/components/ui/card';
-import { LoginForm } from '@/components/shared/form-login.shared.component';
+import { FormLoginTOTP } from '@/components/shared/form-login-totp.shared.component';
 import { SwitcherLocale } from '@/components/shared/switcher-locale';
 import { Toaster } from 'sonner';
 import { useTranslations } from 'next-intl';
@@ -21,13 +21,13 @@ export default function Page() {
 							<CardHeader className="gap-8 pb-0">
 								<div className="flex flex-col">
 									<CardTitle className="text-5xl font-semibold text-neutral-base-800">
-										Sign in
+										Verify TOTP
 									</CardTitle>
 								</div>
 							</CardHeader>
 							<CardContent>
 								<div className="grid gap-4">
-									<LoginForm />
+									<FormLoginTOTP />
 								</div>
 							</CardContent>
 						</Card>

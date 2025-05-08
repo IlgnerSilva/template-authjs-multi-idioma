@@ -10,7 +10,7 @@ import {
 } from '@react-email/components';
 import type * as React from 'react';
 
-export function MFACode({ code = 'XXXXXX' }: { code?: string }) {
+export function MFACodeTemplate({ code = 'XXXXXX' }: { code?: string }) {
 	// Separar o código em dígitos individuais para o design
 	const codeDigits = code?.split('') || [];
 
@@ -156,4 +156,4 @@ const styles: Record<string, React.CSSProperties> = {
 	},
 };
 
-export default MFACode;
+export default MFACodeTemplate;
