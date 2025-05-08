@@ -12,4 +12,12 @@ export class AuthBetterAuthProvider implements IAuthBetterAuthProvider {
         },
       })    
     }
+
+    async verifyTOTP(code:string){
+      return await batterAuth.api.verifyTOTP({
+        body: {
+          code,
+        },
+      })
+    }
 }

@@ -1,74 +1,83 @@
 {
-    "Pages": {
-        "Login": {
-            "titleCredentials": "Continue com email e senha",
-            "titleOauth": "Conecte-se usando",
-            "titleOTP": "Enviamos um código de verificação para o seu email",
-            "messages": {
-                "error": {
-                    "email": "Email inválido",
-                    "password": {
-                        "required": "Preencha o campo de senha"
-                    },
-                    "credentials": "Nome de usuário ou senha inválidos"
-                }
-            }
-        }
-    },
-    "Components": {
-        "Button": {
-            "login": {
-                "default": "Entrar",
-                "google": "Google",
-                "facebook": "Facebook",
-                "github": "GitHub"
-            }
-        },
-        "Input": {
-            "email": {
-                "placeholder": "email@exemplo.com",
-                "label": "Email"
-            },
-            "password": {
-                "label": "Senha",
-                "placeholder": "Digite sua senha"
-            }
-        }
-    },
-    "Validation": {
-        "required": "Este campo é obrigatório",
-        "invalidEmail": "Digite um email válido"
-    },
-    "Errors": {
-        "USER_NOT_FOUND": "Usuário não encontrado",
-        "FAILED_TO_CREATE_USER": "Falha ao criar usuário",
-        "FAILED_TO_CREATE_SESSION": "Falha ao criar sessão",
-        "FAILED_TO_UPDATE_USER": "Falha ao atualizar usuário",
-        "FAILED_TO_GET_SESSION": "Falha ao obter sessão",
-        "INVALID_PASSWORD": "Senha inválida",
-        "INVALID_EMAIL": "Email inválido",
-        "INVALID_EMAIL_OR_PASSWORD": "Email ou senha inválidos",
-        "SOCIAL_ACCOUNT_ALREADY_LINKED": "Conta social já vinculada",
-        "PROVIDER_NOT_FOUND": "Provedor não encontrado",
-        "INVALID_TOKEN": "Token inválido",
-        "ID_TOKEN_NOT_SUPPORTED": "Token de ID não suportado",
-        "FAILED_TO_GET_USER_INFO": "Falha ao obter informações do usuário",
-        "USER_EMAIL_NOT_FOUND": "Email do usuário não encontrado",
-        "EMAIL_NOT_VERIFIED": "Email não verificado",
-        "PASSWORD_TOO_SHORT": "Senha muito curta",
-        "PASSWORD_TOO_LONG": "Senha muito longa",
-        "USER_ALREADY_EXISTS": "Usuário já existe",
-        "EMAIL_CAN_NOT_BE_UPDATED": "Email não pode ser atualizado",
-        "CREDENTIAL_ACCOUNT_NOT_FOUND": "Conta de credencial não encontrada",
-        "SESSION_EXPIRED": "Sessão expirada. Autentique-se novamente para realizar esta ação",
-        "FAILED_TO_UNLINK_LAST_ACCOUNT": "Você não pode desvincular sua última conta",
-        "ACCOUNT_NOT_FOUND": "Conta não encontrada"
-    },
-    "Form": {
-        "username": "Nome de usuário",
-        "age": "Idade"
-    },
-    "CustomErrors": {
-        "admin_username_error": "Boa tentativa!"
-    }
+	"Pages": {
+		"Login": {
+			"titleCredentials": "Continue com email e senha",
+			"titleOauth": "Conecte-se usando",
+			"titleOTP": "Enviamos um código de verificação para o seu email",
+			"messages": {
+				"error": {
+					"email": "Email inválido",
+					"password": {
+						"required": "Preencha o campo de senha"
+					},
+					"credentials": "Nome de usuário ou senha inválidos"
+				}
+			}
+		}
+	},
+	"Components": {
+		"Button": {
+			"login": {
+				"default": "Entrar",
+				"google": "Google",
+				"facebook": "Facebook",
+				"github": "GitHub"
+			}
+		},
+		"Input": {
+			"email": {
+				"placeholder": "email@exemplo.com",
+				"label": "Email"
+			},
+			"password": {
+				"label": "Senha",
+				"placeholder": "Digite sua senha"
+			}
+		}
+	},
+	"Validation": {
+		"required": "Este campo é obrigatório",
+		"invalidEmail": "Digite um email válido"
+	},
+	"Errors": {
+		"USER_NOT_FOUND": "Usuário não encontrado",
+		"FAILED_TO_CREATE_USER": "Falha ao criar usuário",
+		"FAILED_TO_CREATE_SESSION": "Falha ao criar sessão",
+		"FAILED_TO_UPDATE_USER": "Falha ao atualizar usuário",
+		"FAILED_TO_GET_SESSION": "Falha ao obter sessão",
+		"INVALID_PASSWORD": "Senha inválida",
+		"INVALID_EMAIL": "Email inválido",
+		"INVALID_EMAIL_OR_PASSWORD": "Email ou senha inválidos",
+		"SOCIAL_ACCOUNT_ALREADY_LINKED": "Conta social já vinculada",
+		"PROVIDER_NOT_FOUND": "Provedor não encontrado",
+		"INVALID_TOKEN": "Token inválido",
+		"ID_TOKEN_NOT_SUPPORTED": "Token de ID não suportado",
+		"FAILED_TO_GET_USER_INFO": "Falha ao obter informações do usuário",
+		"USER_EMAIL_NOT_FOUND": "Email do usuário não encontrado",
+		"EMAIL_NOT_VERIFIED": "Email não verificado",
+		"PASSWORD_TOO_SHORT": "Senha muito curta",
+		"PASSWORD_TOO_LONG": "Senha muito longa",
+		"USER_ALREADY_EXISTS": "Usuário já existe",
+		"EMAIL_CAN_NOT_BE_UPDATED": "Email não pode ser atualizado",
+		"CREDENTIAL_ACCOUNT_NOT_FOUND": "Conta de credencial não encontrada",
+		"SESSION_EXPIRED": "Sessão expirada. Autentique-se novamente para realizar esta ação",
+		"FAILED_TO_UNLINK_LAST_ACCOUNT": "Você não pode desvincular sua última conta",
+		"ACCOUNT_NOT_FOUND": "Conta não encontrada",
+		"OTP_NOT_ENABLED": "OTP não está ativado",
+		"OTP_HAS_EXPIRED": "OTP expirou",
+		"TOTP_NOT_ENABLED": "TOTP não está ativado",
+		"TWO_FACTOR_NOT_ENABLED": "A autenticação em duas etapas não está ativada",
+		"BACKUP_CODES_NOT_ENABLED": "Códigos de backup não estão ativados",
+		"INVALID_BACKUP_CODE": "Código de backup inválido",
+		"INVALID_CODE": "Código inválido",
+		"TOO_MANY_ATTEMPTS_REQUEST_NEW_CODE": "Muitas tentativas. Solicite um novo código.",
+		"INVALID_TWO_FACTOR_COOKIE": "Cookie de autenticação em duas etapas inválido"
+	},
+	"Form": {
+		"username": "Nome de usuário",
+		"age": "Idade"
+	},
+	"CustomErrors": {
+		"admin_username_error": "Boa tentativa!"
+	}
 }

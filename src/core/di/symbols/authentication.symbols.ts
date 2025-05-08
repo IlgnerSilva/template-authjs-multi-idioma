@@ -1,15 +1,18 @@
-import type { SigninEmailAndPasswordUseCase } from '@/core/application/usecases/user/SigninEmailAndPassword.use-case';
-import { createSymbol } from '@/core/di/utils/createSymbols.util';
 import type { IAuthBetterAuthProvider } from '@/core/domain/providers/better-auth/auth.better-auth.interface';
-import type { IEmailService } from '@/core/domain/services/email.service.interface';
+import type { SigninEmailAndPasswordUseCase } from '@/core/application/usecases/auth/SigninEmailAndPassword.use-case';
+import type { VerifyTOTP } from '@/core/application/usecases/auth/VerifyTOTP.use-case';
+import { createSymbol } from '@/core/di/utils/createSymbols.util';
 
-
-export const AUTHENTICATION_SYMBOLS = {
+export const SIGNINEMAILANDPASSWORD_SYMBOLS = {
 	IAuthBetterAuthProvider: createSymbol<IAuthBetterAuthProvider>('IAuthBetterAuthProvider'),
-	IEmailService: createSymbol<IEmailService>('IEmailService'),
-	// IPassword: createSymbol<IPassword>('IPassword'),
 	SigninEmailAndPasswordUseCase:
 		createSymbol<SigninEmailAndPasswordUseCase>(
 			'SigninEmailAndPasswordUseCase',
 		),
 } as const;
+
+export const VERIFYTOTP_SIMBOLS = {
+	IAuthBetterAuthProvider: createSymbol<IAuthBetterAuthProvider>('IAuthBetterAuthProvider'),
+	VerifyTOTP: createSymbol<VerifyTOTP>('VerifyTOTP'),
+} as const;
+

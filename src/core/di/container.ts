@@ -1,6 +1,8 @@
 import 'reflect-metadata';
 
+import { BetterAuthProviderModule } from '@/core/di/modules/providers/better-auth/better-auth.module';
 import { SigninEmailAndPasswordModule } from '@/core/di/modules/auth/signinEmailAndPassword.module';
+import { VerifyTOTPModule } from '@/core/di/modules/auth/verifyTotp.module';
 import { Container } from 'inversify';
 
 const ApplicationContainer = new Container({
@@ -8,7 +10,9 @@ const ApplicationContainer = new Container({
 });
 
 export const initializeContainer = () => {
+	ApplicationContainer.load(BetterAuthProviderModule);
 	ApplicationContainer.load(SigninEmailAndPasswordModule);
+	ApplicationContainer.load(VerifyTOTPModule);
 };
 
 export const destroyContainer = () => {

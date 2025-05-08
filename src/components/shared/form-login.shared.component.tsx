@@ -12,7 +12,7 @@ import {
 	FormMessage,
 } from '@/components/ui/form';
 import { useI18nZodErrors } from '@/lib/useI18nZodErrors';
-import { CredentialSchema } from '@/schemas/auth';
+import { SigninEmailAndPasswordSchema } from '@/schemas/auth';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { KeyRound, Mail } from 'lucide-react';
 import { useTranslations } from 'next-intl';
@@ -31,15 +31,15 @@ export function LoginForm() {
 	const c = useTranslations('Components');
 
 	useI18nZodErrors();
-	const form = useForm<z.infer<typeof CredentialSchema>>({
-		resolver: zodResolver(CredentialSchema),
+	const form = useForm<z.infer<typeof SigninEmailAndPasswordSchema>>({
+		resolver: zodResolver(SigninEmailAndPasswordSchema),
 		defaultValues: {
 			email: 'ilgnersilva@outlook.com',
 			password: '12345678',
 		},
 	});
 
-	async function onSubmit(values: z.infer<typeof CredentialSchema>) {
+	async function onSubmit(values: z.infer<typeof SigninEmailAndPasswordSchema>) {
 		const { email, password } = values;
 		
 		startTransition(async () => {

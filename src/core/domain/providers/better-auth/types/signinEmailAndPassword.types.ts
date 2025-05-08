@@ -1,8 +1,8 @@
 // Sua interface original
 type ResponseDTO = {
-    redirect: boolean;
+    redirect?: boolean;
     token: string;
-    url: string | undefined;
+    url?: string | undefined;
     user: {
         id: string;
         email: string;

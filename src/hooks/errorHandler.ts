@@ -27,6 +27,15 @@ export const BASE_ERROR_CODES = {
 	SESSION_EXPIRED: "Session expired. Re-authenticate to perform this action.",
 	FAILED_TO_UNLINK_LAST_ACCOUNT: "You can't unlink your last account",
 	ACCOUNT_NOT_FOUND: "Account not found",
+  OTP_NOT_ENABLED: "OTP not enabled",
+	OTP_HAS_EXPIRED: "OTP has expired",
+	TOTP_NOT_ENABLED: "TOTP not enabled",
+	TWO_FACTOR_NOT_ENABLED: "Two factor isn't enabled",
+	BACKUP_CODES_NOT_ENABLED: "Backup codes aren't enabled",
+	INVALID_BACKUP_CODE: "Invalid backup code",
+	INVALID_CODE: "Invalid code",
+	TOO_MANY_ATTEMPTS_REQUEST_NEW_CODE:"Too many attempts. Please request a new code.",
+	INVALID_TWO_FACTOR_COOKIE: "Invalid two factor cookie",
 } as const;
 
 // Tipos para o manipulador de erros

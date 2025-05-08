@@ -22,9 +22,10 @@ import { useForm } from 'react-hook-form';
 import type { z } from 'zod';
 import { Button } from './button';
 import { useTranslations } from 'next-intl';
+import { orpcClient } from "@/lib/orpc"
 
 export function FormLoginTOTP() {
-	const route = useRouter();
+	const router = useRouter();
 	const { showErrorToast } = useApiErrorHandler();
 	const [isPending, startTransition] = useTransition();
 	const p = useTranslations('Pages');
@@ -37,11 +38,27 @@ export function FormLoginTOTP() {
 		},
 	});
 
-	async function onSubmit(values: z.infer<typeof TotpSchema>) {}
+	async function onSubmit(values: z.infer<typeof TotpSchema>) {
+		startTransition(async () => {
+			const response = await orpcClient.auth.verifyTotp(values)
+
+			// Verificar se é uma resposta de erro
+			if ('defined' in response && response.defined === false) {
+				// Tratar erro de autenticação
+				showErrorToast(response.data.code) 
+				return;
+			}
+
+			if ('token' in response && 'user' in response) {
+				router.push("/");
+			  return;
+			}
+		})
+	}
 
 	return (
 		<Form {...form}>
-			<form>
+			<form onSubmit={form.handleSubmit(onSubmit)}>
 				<div>
 					<FormField
 						control={form.control}

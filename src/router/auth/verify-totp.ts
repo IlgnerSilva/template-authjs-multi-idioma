@@ -1,20 +1,20 @@
-import { SigninEmailAndPasswordSchema } from '@/schemas/auth';
+import { TotpSchema } from '@/schemas/auth';
 import { ORPCError, os,  } from '@orpc/server';
 import { getInjection } from '@/core/di/container';
-import { SIGNINEMAILANDPASSWORD_SYMBOLS } from '@/core/di/symbols/authentication.symbols';
+import { VERIFYTOTP_SIMBOLS } from '@/core/di/symbols/authentication.symbols';
 
-export const signin = os
+export const verifyTotp = os
 	.route({
 		method: 'POST',
-		path: '/authentication/signin',
-		summary: 'Signin',
+		path: '/authentication/verify/totp',
+		summary: 'Verify TOTP',
 		tags: ['Authentication'],
 	})
-	.input(SigninEmailAndPasswordSchema)
+	.input(TotpSchema)
 	.handler(async ({ input }) => {
 		try {
 			return await getInjection(
-				SIGNINEMAILANDPASSWORD_SYMBOLS.SigninEmailAndPasswordUseCase,
+				VERIFYTOTP_SIMBOLS.VerifyTOTP,
 			).execute(input);
 			// biome-ignore lint/suspicious/noExplicitAny: <explanation>
 		} catch (err: any) {
