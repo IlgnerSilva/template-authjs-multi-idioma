@@ -1,7 +1,7 @@
-import { SigninEmailAndPasswordSchema } from '@/schemas/auth';
-import { ORPCError, os,  } from '@orpc/server';
 import { getInjection } from '@/core/di/container';
 import { SIGNINEMAILANDPASSWORD_SYMBOLS } from '@/core/di/symbols/authentication.symbols';
+import { SigninEmailAndPasswordSchema } from '@/schemas/auth';
+import { os, ORPCError } from '@orpc/server';
 
 export const signin = os
 	.route({
@@ -18,10 +18,11 @@ export const signin = os
 			).execute(input);
 			// biome-ignore lint/suspicious/noExplicitAny: <explanation>
 		} catch (err: any) {
-			return new ORPCError(err.status, {
+			throw new ORPCError(err.status, {
 				data: err.body,
 				message: err.message,
 				status: err.statusCode,
 			});
 		}
-	}).actionable()
+	})
+	.actionable();
