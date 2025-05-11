@@ -5,7 +5,7 @@ import {
 	SidebarContent,
 	SidebarFooter,
 	SidebarHeader,
-} from '@/components/ui/sidebar';
+} from '@/presentation/components/ui/sidebar';
 import { GalleryVerticalEnd, Ribbon } from 'lucide-react';
 import { Profile } from './profile.shared.component';
 import { TeamSwitcher } from './team-switcher.shared.component';

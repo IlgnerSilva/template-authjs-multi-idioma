@@ -1,13 +1,13 @@
 'use client';
 
+import { locales, usePathname } from '@/lib/i18n/routing';
 import {
 	Select,
 	SelectContent,
 	SelectItem,
 	SelectTrigger,
 	SelectValue,
-} from '@/components/ui/select';
-import { locales, usePathname } from '@/lib/i18n/routing';
+} from '@/presentation/components/ui/select';
 import { usePathname as usePath, useRouter } from 'next/navigation';
 
 export function SwitcherLocale() {

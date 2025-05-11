@@ -3,13 +3,13 @@ import {
 	DropdownMenuContent,
 	DropdownMenuItem,
 	DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
+} from '@/presentation/components/ui/dropdown-menu';
 import {
 	SidebarMenu,
 	SidebarMenuButton,
 	SidebarMenuItem,
 	useSidebar,
-} from '@/components/ui/sidebar';
+} from '@/presentation/components/ui/sidebar';
 import { ChevronUp, User2 } from 'lucide-react';
 
 export function Profile() {

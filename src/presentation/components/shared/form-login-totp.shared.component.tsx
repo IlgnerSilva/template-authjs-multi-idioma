@@ -1,5 +1,6 @@
 'use client';
 
+import { orpcClient } from '@/lib/orpc/orpc-client';
 import {
 	Form,
 	FormControl,
@@ -7,13 +8,12 @@ import {
 	FormItem,
 	FormLabel,
 	FormMessage,
-} from '@/components/ui/form';
+} from '@/presentation/components/ui/form';
 import {
 	InputOTP,
 	InputOTPGroup,
 	InputOTPSlot,
-} from '@/components/ui/input-otp';
-import { orpcClient } from '@/lib/orpc/orpc-client';
+} from '@/presentation/components/ui/input-otp';
 import { useApiErrorHandler } from '@/presentation/hooks/errorHandler';
 import { TotpSchema } from '@/schemas/auth';
 import { zodResolver } from '@hookform/resolvers/zod';

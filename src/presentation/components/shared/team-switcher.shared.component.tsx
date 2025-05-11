@@ -3,6 +3,7 @@
 import { Plus } from 'lucide-react';
 import * as React from 'react';
 
+import { MFACodeTemplate } from '@/presentation/components/shared/emails/mfaCode.template';
 import {
 	DropdownMenu,
 	DropdownMenuContent,
@@ -10,15 +11,13 @@ import {
 	DropdownMenuLabel,
 	DropdownMenuSeparator,
 	DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
+} from '@/presentation/components/ui/dropdown-menu';
 import {
 	SidebarMenu,
 	SidebarMenuButton,
 	SidebarMenuItem,
 	useSidebar,
-} from '@/components/ui/sidebar';
-import { MFACodeTemplate } from '@/components/shared/emails/mfaCode.template';
-
+} from '@/presentation/components/ui/sidebar';
 
 export function TeamSwitcher({
 	teams,
