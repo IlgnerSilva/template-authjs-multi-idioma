@@ -1,17 +1,18 @@
 'use client';
 
-import { Sidebar, SidebarHeader } from '@/components/ui/sidebar';
+import {
+	Sidebar,
+	SidebarContent,
+	SidebarFooter,
+	SidebarHeader,
+} from '@/components/ui/sidebar';
 import { GalleryVerticalEnd, Ribbon } from 'lucide-react';
+import { Profile } from './profile.shared.component';
 import { TeamSwitcher } from './team-switcher.shared.component';
 
 export function AppSidebar() {
 	const organizations = {
 		teams: [
-			{
-				name: 'Acme Inc TESTE',
-				logo: GalleryVerticalEnd,
-				plan: 'Enterprise',
-			},
 			{
 				name: 'Acme Inc',
 				logo: Ribbon,
@@ -25,6 +26,10 @@ export function AppSidebar() {
 			<SidebarHeader>
 				<TeamSwitcher teams={organizations.teams} />
 			</SidebarHeader>
+			<SidebarContent />
+			<SidebarFooter>
+				<Profile />
+			</SidebarFooter>
 		</Sidebar>
 	);
 }
