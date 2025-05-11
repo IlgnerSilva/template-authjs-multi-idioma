@@ -1,28 +1,28 @@
-'use client'
+'use client';
 
 import {
+	Form,
+	FormControl,
 	FormField,
 	FormItem,
 	FormLabel,
-	FormControl,
 	FormMessage,
-	Form,
 } from '@/components/ui/form';
 import {
 	InputOTP,
 	InputOTPGroup,
 	InputOTPSlot,
 } from '@/components/ui/input-otp';
-import { useApiErrorHandler } from '@/hooks/errorHandler';
+import { orpcClient } from '@/lib/orpc/orpc-client';
+import { useApiErrorHandler } from '@/presentation/hooks/errorHandler';
 import { TotpSchema } from '@/schemas/auth';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useTranslations } from 'next-intl';
 import { useRouter } from 'next/navigation';
 import { useTransition } from 'react';
 import { useForm } from 'react-hook-form';
 import type { z } from 'zod';
 import { Button } from './button';
-import { useTranslations } from 'next-intl';
-import { orpcClient } from "@/lib/orpc"
 
 export function FormLoginTOTP() {
 	const router = useRouter();
@@ -40,20 +40,20 @@ export function FormLoginTOTP() {
 
 	async function onSubmit(values: z.infer<typeof TotpSchema>) {
 		startTransition(async () => {
-			const response = await orpcClient.auth.verifyTotp(values)
+			const response = await orpcClient.auth.verifyTotp(values);
 
 			// Verificar se é uma resposta de erro
 			if ('defined' in response && response.defined === false) {
 				// Tratar erro de autenticação
-				showErrorToast(response.data.code) 
+				showErrorToast(response.data.code);
 				return;
 			}
 
 			if ('token' in response && 'user' in response) {
-				router.push("/");
-			  return;
+				router.push('/');
+				return;
 			}
-		})
+		});
 	}
 
 	return (

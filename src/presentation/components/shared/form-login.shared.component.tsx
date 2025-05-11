@@ -11,9 +11,9 @@ import {
 	FormLabel,
 	FormMessage,
 } from '@/components/ui/form';
-import { useApiErrorHandler } from '@/hooks/errorHandler';
-import { orpcClient } from '@/lib/orpc';
+import { orpcClient } from '@/lib/orpc/orpc-client';
 import { useI18nZodErrors } from '@/lib/useI18nZodErrors';
+import { useApiErrorHandler } from '@/presentation/hooks/errorHandler';
 import { SigninEmailAndPasswordSchema } from '@/schemas/auth';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { ORPCError, safe } from '@orpc/client';

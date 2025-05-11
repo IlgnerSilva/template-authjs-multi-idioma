@@ -7,7 +7,7 @@ import {
 	SelectTrigger,
 	SelectValue,
 } from '@/components/ui/select';
-import { locales, usePathname } from '@/i18n/routing';
+import { locales, usePathname } from '@/lib/i18n/routing';
 import { usePathname as usePath, useRouter } from 'next/navigation';
 
 export function SwitcherLocale() {

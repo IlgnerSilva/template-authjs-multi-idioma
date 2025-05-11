@@ -1,4 +1,4 @@
-import { router } from '@/router';
+import { router } from '@/lib/orpc/router';
 import { OpenAPIHandler } from '@orpc/openapi/next';
 import { onError } from '@orpc/server';
 import { serve } from '@orpc/server/next';

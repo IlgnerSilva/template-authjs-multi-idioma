@@ -1,4 +1,4 @@
-import { router } from '@/router';
+import { router } from '@/lib/orpc/router';
 import { onError } from '@orpc/server';
 import { RPCHandler, serve } from '@orpc/server/next';
 import '@/polyfill';

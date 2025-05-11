@@ -1,10 +1,10 @@
+import { auth } from '@/lib/better-auth/auth';
 // import NextAuth from 'next-auth';
 import createMiddleware from 'next-intl/middleware';
+import { headers } from 'next/headers';
 import { type NextRequest, NextResponse } from 'next/server';
 // import authConfig from './auth.config';
-import { locales, routing } from './i18n/routing';
-import { auth } from '@/lib/auth';
-import { headers } from 'next/headers';
+import { locales, routing } from './lib/i18n/routing';
 
 const publicRoutes = ['/auth/login', '/auth/verify/totp'];
 const privateRoutes = ['/'];
@@ -30,8 +30,8 @@ const authMiddleware = async (req: NextRequest) => {
 	const isProtectPage = testPathnameRegex(privateRoutes, req.nextUrl.pathname);
 
 	const session = await auth.api.getSession({
-        headers: await headers()
-    })
+		headers: await headers(),
+	});
 	const isLogged = !!session;
 
 	// Se o usuário não estiver autenticado e tentar acessar uma página que requer autenticação, redireciona para a página de login
@@ -60,8 +60,8 @@ const middleware = (req: NextRequest) => {
 
 // Configuração de correspondência para os caminhos que o middleware deve interceptar
 export const config = {
-	runtime: "nodejs", 
-	matcher: ['/((?!api|doc|rpc|spec|_next|_vercel|.*\\..*).*)']
+	runtime: 'nodejs',
+	matcher: ['/((?!api|doc|rpc|spec|_next|_vercel|.*\\..*).*)'],
 };
 
 export default middleware;

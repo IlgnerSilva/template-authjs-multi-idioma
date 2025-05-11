@@ -1,5 +1,5 @@
 import './globals.css';
-import { Providers } from './providers';
+import { Providers } from '@/presentation/layouts/react-query/react-query.layout';
 
 // const geistSans = localFont({
 // 	src: './fonts/GeistVF.woff',

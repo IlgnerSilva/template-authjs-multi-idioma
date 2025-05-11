@@ -1,4 +1,4 @@
-import { signin } from '@/router/auth/signin';
+import { signin } from '@/lib/orpc/router/auth/signin';
 import { OpenAPIGenerator } from '@orpc/openapi';
 import { ZodToJsonSchemaConverter } from '@orpc/zod';
 

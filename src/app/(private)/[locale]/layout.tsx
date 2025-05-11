@@ -1,19 +1,11 @@
-import { AppSidebar } from '@/components/shared/app-sidebar';
-import {
-	Breadcrumb,
-	BreadcrumbItem,
-	BreadcrumbLink,
-	BreadcrumbList,
-	BreadcrumbPage,
-	BreadcrumbSeparator,
-} from '@/components/ui/breadcrumb';
-import { Separator } from '@/components/ui/separator';
+import { routing } from '@/lib/i18n/routing';
+import { AppSidebar } from '@/presentation/components/shared/app-sidebar';
+import { Separator } from '@/presentation/components/ui/separator';
 import {
 	SidebarInset,
 	SidebarProvider,
 	SidebarTrigger,
-} from '@/components/ui/sidebar';
-import { routing } from '@/i18n/routing';
+} from '@/presentation/components/ui/sidebar';
 import { NextIntlClientProvider } from 'next-intl';
 import { getMessages } from 'next-intl/server';
 import { notFound } from 'next/navigation';
