@@ -1,5 +1,5 @@
 import { Login } from '@/presentation/pages/login';
 
-export function Page() {
+export default function Page() {
 	return <Login />;
 }

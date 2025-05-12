@@ -1,8 +1,9 @@
 import 'reflect-metadata';
 
-import { BetterAuthProviderModule } from '@/core/di/modules/providers/better-auth/better-auth.module';
+import { SignoutModule } from '@/core/di/modules/auth/Signout.module';
 import { SigninEmailAndPasswordModule } from '@/core/di/modules/auth/signinEmailAndPassword.module';
 import { VerifyTOTPModule } from '@/core/di/modules/auth/verifyTotp.module';
+import { BetterAuthProviderModule } from '@/core/di/modules/providers/better-auth/better-auth.module';
 import { Container } from 'inversify';
 
 const ApplicationContainer = new Container({
@@ -13,6 +14,7 @@ export const initializeContainer = () => {
 	ApplicationContainer.load(BetterAuthProviderModule);
 	ApplicationContainer.load(SigninEmailAndPasswordModule);
 	ApplicationContainer.load(VerifyTOTPModule);
+	ApplicationContainer.load(SignoutModule);
 };
 
 export const destroyContainer = () => {

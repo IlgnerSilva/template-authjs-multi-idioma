@@ -1,3 +1,6 @@
+'use client';
+
+import { orpcClient } from '@/lib/orpc/orpc-client';
 import {
 	DropdownMenu,
 	DropdownMenuContent,
@@ -8,11 +11,28 @@ import {
 	SidebarMenu,
 	SidebarMenuButton,
 	SidebarMenuItem,
-	useSidebar,
 } from '@/presentation/components/ui/sidebar';
-import { ChevronUp, User2 } from 'lucide-react';
+import { useApiErrorHandler } from '@/presentation/hooks/errorHandler';
+import { safe } from '@orpc/client';
+import { ORPCError } from '@orpc/client';
+import { User2 } from 'lucide-react';
+import { useRouter } from 'next/navigation';
+import { useTransition } from 'react';
 
 export function Profile() {
+	const [isPending, startTransition] = useTransition();
+	const { showErrorToast } = useApiErrorHandler();
+	const router = useRouter();
+	const handleSignout = () => {
+		startTransition(async () => {
+			const { error, data } = await safe(orpcClient.auth.signout());
+			if (error instanceof ORPCError) {
+				showErrorToast(error.data.code);
+			}
+
+			if (data?.success) router.push('/');
+		});
+	};
 	return (
 		<SidebarMenu>
 			<SidebarMenuItem>
@@ -29,7 +49,7 @@ export function Profile() {
 						</SidebarMenuButton>
 					</DropdownMenuTrigger>
 					<DropdownMenuContent
-						side="top"
+						side="right"
 						className="w-[--radix-popper-anchor-width] bg-neutral-base-100"
 					>
 						<DropdownMenuItem className="hover:bg-sidebar-accent">
@@ -39,7 +59,8 @@ export function Profile() {
 							<span>Billing</span>
 						</DropdownMenuItem>
 						<DropdownMenuItem className="hover:bg-sidebar-accent">
-							<span>Sign out</span>
+							{/* biome-ignore lint/a11y/useButtonType: <explanation> */}
+							<button onClick={handleSignout}>Sign out</button>
 						</DropdownMenuItem>
 					</DropdownMenuContent>
 				</DropdownMenu>
