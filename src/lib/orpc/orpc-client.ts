@@ -3,9 +3,10 @@ import { createORPCClient } from '@orpc/client';
 import { RPCLink } from '@orpc/client/fetch';
 import { createORPCReactQueryUtils } from '@orpc/react-query';
 import type { RouterClient } from '@orpc/server';
+import { env } from '@/env/server'
 
 const rpcLink = new RPCLink({
-	url: new URL('http://localhost:3000/rpc'),
+	url: new URL(`${env.HOST}/rpc`),
 	headers: () => ({
 		Authorization: 'Bearer default-token',
 	}),

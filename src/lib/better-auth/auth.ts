@@ -13,6 +13,7 @@ import {
 	organization,
 	twoFactor,
 } from 'better-auth/plugins';
+import { env } from '@/env/server'
 export const auth = betterAuth({
 	database: drizzleAdapter(db, {
 		provider: 'pg',
@@ -26,7 +27,7 @@ export const auth = betterAuth({
 			maxAge: 5 * 60, // Cache duration in seconds
 		},
 	},
-	trustedOrigins: ['http://localhost:3000'],
+	trustedOrigins: [env.HOST],
 	appName: 'template-authjs-multi-idioma',
 	advanced: {
 		database: {
