@@ -13,7 +13,7 @@ import {
 	organization,
 	twoFactor,
 } from 'better-auth/plugins';
-import { env } from '@/env/server'
+import { env } from '@/env'
 export const auth = betterAuth({
 	database: drizzleAdapter(db, {
 		provider: 'pg',

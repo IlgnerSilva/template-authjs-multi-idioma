@@ -1,4 +1,4 @@
-import { env } from './src/env/server';
+import { env } from './src/env';
 import { defineConfig } from 'drizzle-kit';
 
 if (!env.DATABASE_URL) {

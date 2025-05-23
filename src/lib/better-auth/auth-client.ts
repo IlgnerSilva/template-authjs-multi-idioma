@@ -1,10 +1,8 @@
 import { createAuthClient } from 'better-auth/client';
 import { twoFactorClient } from 'better-auth/plugins';
-import { env } from '@/env/server'
-
 
 export const authClient = createAuthClient({
-	baseURL: env.HOST,
+	baseURL: process.env.NEXT_PUBLIC_HOST,
 	plugins: [twoFactorClient()],
 	fetchOptions: {
 		credentials: 'include',
