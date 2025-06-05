@@ -3,6 +3,7 @@ import 'reflect-metadata';
 import { SignoutModule } from '@/core/di/modules/auth/Signout.module';
 import { SigninEmailAndPasswordModule } from '@/core/di/modules/auth/signinEmailAndPassword.module';
 import { VerifyTOTPModule } from '@/core/di/modules/auth/verifyTotp.module';
+import { GetSessionAuthModule } from '@/core/di/modules/auth/getSessionAuth.module';
 import { BetterAuthProviderModule } from '@/core/di/modules/providers/better-auth/better-auth.module';
 import { Container } from 'inversify';
 
@@ -15,6 +16,7 @@ export const initializeContainer = () => {
 	ApplicationContainer.load(SigninEmailAndPasswordModule);
 	ApplicationContainer.load(VerifyTOTPModule);
 	ApplicationContainer.load(SignoutModule);
+	ApplicationContainer.load(GetSessionAuthModule);
 };
 
 export const destroyContainer = () => {

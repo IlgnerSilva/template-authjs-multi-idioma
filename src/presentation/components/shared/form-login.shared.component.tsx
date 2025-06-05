@@ -1,6 +1,5 @@
 'use client';
 
-import { orpcClient } from '@/lib/orpc/orpc-client';
 import { useI18nZodErrors } from '@/lib/zod/useI18nZodErrors';
 import { Button } from '@/presentation/components/shared/button';
 import { Input, InputGroup } from '@/presentation/components/shared/input';
@@ -10,30 +9,42 @@ import {
 	FormDescription,
 	FormField,
 	FormItem,
-	FormLabel,
 	FormMessage,
 } from '@/presentation/components/ui/form';
-import { useApiErrorHandler } from '@/presentation/hooks/errorHandler';
-import { SigninEmailAndPasswordSchema } from '@/schemas/auth';
+import { type BASE_ERROR_CODES, useApiErrorHandler } from '@/presentation/hooks/errorHandler';
+import { signinEmailAndPasswordSchema } from '@/lib/zod/schemas/auth';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { ORPCError, safe } from '@orpc/client';
 import { KeyRound, Mail } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import { useRouter } from 'next/navigation';
-import { useTransition } from 'react';
 import { useForm } from 'react-hook-form';
 import type { z } from 'zod';
+import { useServerAction } from '@orpc/react/hooks'
+import { signin } from '@/lib/orpc/router/auth/signin'
+import { onError, onSuccess } from '@orpc/client'
 
 export function LoginForm() {
 	const router = useRouter();
 	const { showErrorToast } = useApiErrorHandler();
-	const [isPending, startTransition] = useTransition();
 	const p = useTranslations('Pages');
 	const c = useTranslations('Components');
+	const { execute, isPending } = useServerAction(signin, {
+		interceptors: [
+			onError(erro => {
+				if('data' in erro){
+					showErrorToast((erro.data as { code: keyof typeof BASE_ERROR_CODES }).code);
+				}
+			}),
+			onSuccess(result => {
+				if('token' in result)
+					router.push('/')	
+			}),
+		]
+	})
 
 	useI18nZodErrors();
-	const form = useForm<z.infer<typeof SigninEmailAndPasswordSchema>>({
-		resolver: zodResolver(SigninEmailAndPasswordSchema),
+	const form = useForm<z.infer<typeof signinEmailAndPasswordSchema>>({
+		resolver: zodResolver(signinEmailAndPasswordSchema),
 		defaultValues: {
 			email: 'ilgnersilva@outlook.com',
 			password: '12345678',
@@ -41,30 +52,9 @@ export function LoginForm() {
 	});
 
 	async function onSubmit(
-		values: z.infer<typeof SigninEmailAndPasswordSchema>,
+		values: z.infer<typeof signinEmailAndPasswordSchema>,
 	) {
-		startTransition(async () => {
-			const { email, password } = values;
-			const { error, data } = await safe(
-				orpcClient.auth.signin({ email, password }),
-			);
-
-			if (error instanceof ORPCError) {
-				showErrorToast(error.data.code);
-			}
-
-			if (data) {
-				if ('twoFactorRedirect' in data && data.twoFactorRedirect === true) {
-					router.push('/auth/verify/totp');
-					return;
-				}
-
-				if ('token' in data && 'user' in data) {
-					router.push('/');
-					return;
-				}
-			}
-		});
+		await execute(values)
 	}
 
 	return (

@@ -13,18 +13,21 @@ export class AuthBetterAuthProvider implements IAuthBetterAuthProvider {
 			},
 		});
 	}
-
 	async signout(): Promise<{ success: boolean }> {
 		return await betterAuth.api.signOut({
 			headers: await headers(),
 		});
 	}
-
 	async verifyTOTP(code: string) {
 		return await betterAuth.api.verifyTOTP({
 			body: {
 				code,
 			},
 		});
+	}
+	async getSessionAuth() {
+		return await betterAuth.api.getSession({
+			headers: await headers(),
+		})
 	}
 }

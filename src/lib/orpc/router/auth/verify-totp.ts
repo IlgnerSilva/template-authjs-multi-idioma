@@ -1,4 +1,4 @@
-import { TotpSchema } from '@/schemas/auth';
+import { totpSchema } from '@/lib/zod/schemas/auth';
 import { ORPCError, os,  } from '@orpc/server';
 import { getInjection } from '@/core/di/container';
 import { VERIFYTOTP_SIMBOLS } from '@/core/di/symbols/authentication.symbols';
@@ -10,7 +10,7 @@ export const verifyTotp = os
 		summary: 'Verify TOTP',
 		tags: ['Authentication'],
 	})
-	.input(TotpSchema)
+	.input(totpSchema)
 	.handler(async ({ input }) => {
 		try {
 			return await getInjection(

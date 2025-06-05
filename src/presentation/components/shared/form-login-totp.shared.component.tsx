@@ -1,6 +1,6 @@
 'use client';
 
-import { orpcClient } from '@/lib/orpc/orpc-client';
+import { orpcClient } from '@/lib/orpc';
 import {
 	Form,
 	FormControl,
@@ -15,7 +15,7 @@ import {
 	InputOTPSlot,
 } from '@/presentation/components/ui/input-otp';
 import { useApiErrorHandler } from '@/presentation/hooks/errorHandler';
-import { TotpSchema } from '@/schemas/auth';
+import { totpSchema } from '@/lib/zod/schemas/auth';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useTranslations } from 'next-intl';
 import { useRouter } from 'next/navigation';
@@ -31,14 +31,14 @@ export function FormLoginTOTP() {
 	const p = useTranslations('Pages');
 	const c = useTranslations('Components');
 
-	const form = useForm<z.infer<typeof TotpSchema>>({
-		resolver: zodResolver(TotpSchema),
+	const form = useForm<z.infer<typeof totpSchema>>({
+		resolver: zodResolver(totpSchema),
 		defaultValues: {
 			code: '',
 		},
 	});
 
-	async function onSubmit(values: z.infer<typeof TotpSchema>) {
+	async function onSubmit(values: z.infer<typeof totpSchema>) {
 		startTransition(async () => {
 			const response = await orpcClient.auth.verifyTotp(values);
 

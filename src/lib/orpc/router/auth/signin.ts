@@ -1,7 +1,9 @@
+'use server'
+
 import { getInjection } from '@/core/di/container';
 import { SIGNINEMAILANDPASSWORD_SYMBOLS } from '@/core/di/symbols/authentication.symbols';
-import { SigninEmailAndPasswordSchema } from '@/schemas/auth';
-import { os, ORPCError } from '@orpc/server';
+import { signinEmailAndPasswordSchema } from '@/lib/zod/schemas/auth';
+import { os, ORPCError, onSuccess, onError } from '@orpc/server';
 
 export const signin = os
 	.route({
@@ -10,7 +12,7 @@ export const signin = os
 		summary: 'Signin',
 		tags: ['Authentication'],
 	})
-	.input(SigninEmailAndPasswordSchema)
+	.input(signinEmailAndPasswordSchema)
 	.handler(async ({ input }) => {
 		try {
 			return await getInjection(

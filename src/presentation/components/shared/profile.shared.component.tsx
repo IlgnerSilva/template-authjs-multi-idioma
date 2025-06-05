@@ -1,6 +1,6 @@
 'use client';
 
-import { orpcClient } from '@/lib/orpc/orpc-client';
+import { orpcClient } from '@/lib/orpc';
 import {
 	DropdownMenu,
 	DropdownMenuContent,

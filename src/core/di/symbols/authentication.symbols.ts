@@ -1,6 +1,7 @@
 import type { SigninEmailAndPasswordUseCase } from '@/core/application/usecases/auth/SigninEmailAndPassword.use-case';
 import type { SignoutUseCase } from '@/core/application/usecases/auth/Signout.use-case';
 import type { VerifyTOTP } from '@/core/application/usecases/auth/VerifyTOTP.use-case';
+import type { GetSessionAuthUseCase } from '@/core/application/usecases/auth/GetSessionAuth.use-case';
 import { createSymbol } from '@/core/di/utils/createSymbols.util';
 import type { IAuthBetterAuthProvider } from '@/core/domain/providers/better-auth/auth.better-auth.interface';
 
@@ -25,4 +26,11 @@ export const VERIFYTOTP_SIMBOLS = {
 		'IAuthBetterAuthProvider',
 	),
 	VerifyTOTP: createSymbol<VerifyTOTP>('VerifyTOTP'),
+} as const;
+
+export const GETSESSIONAUTH_SIMBOLS = {
+	IAuthBetterAuthProvider: createSymbol<IAuthBetterAuthProvider>(
+		'IAuthBetterAuthProvider',
+	),
+	GetSessionAuthUseCase: createSymbol<GetSessionAuthUseCase>('GetSessionAuthUseCase'),
 } as const;

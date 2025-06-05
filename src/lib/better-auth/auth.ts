@@ -12,6 +12,7 @@ import {
 	magicLink,
 	organization,
 	twoFactor,
+	bearer
 } from 'better-auth/plugins';
 import { env } from '@/env'
 export const auth = betterAuth({
@@ -59,6 +60,7 @@ export const auth = betterAuth({
 		},
 	},
 	plugins: [
+		bearer(),
 		jwt(),
 		organization(),
 		admin(),
